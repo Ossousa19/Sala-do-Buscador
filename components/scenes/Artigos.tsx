@@ -5,12 +5,12 @@ import { ArticleCard } from "@/components/ui/ArticleCard";
 import { MuseumFrame } from "@/components/ui/MuseumFrame";
 import { Texture } from "@/components/ui/Texture";
 
-// Covers are a fixed 16:9 (refine brief); the Figma column stagger (offsets 54 / 0 / 137) and
-// the per-column parallax speeds stay.
+// Figma 196:202: column stagger (offsets 54 / 0 / 137), photo ratios 360×360 / 360×492 /
+// 360×434, title widths 236 / full / 236, plus per-column parallax speeds.
 const LAYOUT = [
-  { offset: "md:mt-[54px]", speed: 40 },
-  { offset: "", speed: 90 },
-  { offset: "md:mt-[137px]", speed: 60 },
+  { offset: "md:mt-[54px]", speed: 40, cover: "aspect-square", title: "max-w-[236px]" },
+  { offset: "", speed: 90, cover: "aspect-[360/492]", title: "" },
+  { offset: "md:mt-[137px]", speed: 60, cover: "aspect-[360/434]", title: "max-w-[236px]" },
 ];
 
 export function Artigos({ content }: { content: ArtigosContent }) {
@@ -34,7 +34,7 @@ export function Artigos({ content }: { content: ArtigosContent }) {
           {content.articles.map((article, i) => (
             <li key={article.id} className={LAYOUT[i].offset}>
               <ParallaxLayer speed={LAYOUT[i].speed}>
-                <ArticleCard article={article} />
+                <ArticleCard article={article} coverClassName={LAYOUT[i].cover} titleClassName={LAYOUT[i].title} />
               </ParallaxLayer>
             </li>
           ))}

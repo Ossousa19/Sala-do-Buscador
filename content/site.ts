@@ -91,29 +91,26 @@ export const site: SiteContent = {
     articles: [
       {
         id: "tome",
-        // TODO: substituir pela foto real do artigo
-        image: "/images/artigos/placeholder-1.webp",
+        image: "/images/artigos/tome.webp",
         kicker: "Artigo · 14 min · Biblioteca de Nag Hammadi",
         title: "O Evangelho de Tomé e os 114 ditos",
         author: "Marvin Meyer · Estudioso de textos coptas",
         href: ACERVO,
       },
       {
-        id: "bardo",
-        // TODO: substituir pela foto real do artigo
-        image: "/images/artigos/placeholder-2.webp",
-        kicker: "Vídeo · 22 min · Budismo tibetano",
-        title: "O Bardo Thödol e a travessia da morte",
-        author: "Curadoria da Sala · Tradições do Himalaia",
+        id: "poimandres",
+        image: "/images/artigos/poimandres.webp",
+        kicker: "Vídeo · 22 min · Corpus Hermeticum",
+        title: "As sete esferas no Poimandres: o que o Tratado I descreve sobre a subida da alma",
+        author: "Ana Ribeiro · Doutora em História Antiga, USP",
         href: ACERVO,
       },
       {
-        id: "tao",
-        // TODO: substituir pela foto real do artigo
-        image: "/images/artigos/placeholder-3.webp",
-        kicker: "Verbete · 8 min · Taoísmo",
-        title: "Tao Te Ching: o caminho que não se nomeia",
-        author: "Curadoria da Sala · Filosofia chinesa clássica",
+        id: "nag-hammadi",
+        image: "/images/artigos/nag-hammadi.webp",
+        kicker: "Vídeo · 18:42 · Biblioteca de Nag Hammadi",
+        title: "O que foi encontrado em Nag Hammadi",
+        author: "Episódio 3 · 12 set 2026",
         href: ACERVO,
       },
     ],

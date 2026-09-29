@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-night: #0c0404;
+  --color-cream: #f6e7ce;
+  --color-bone: #d9d9d9;
+  --color-wine: #3b0a0a;
+  --color-wine-deep: #2b0e12;
+  --color-ink: #390007;
+  --color-charcoal: #1f1f1d;
+  --color-parchment: #e8d8b6;
+  --font-display: var(--font-gambetta), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility container-page {
+  width: min(1184px, 100% - 2 * clamp(16px, 5vw, 128px));
+  margin-inline: auto;
+}
+
+html {
+  background: var(--color-night);
+  color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--color-night);
+  overflow-x: clip;
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}

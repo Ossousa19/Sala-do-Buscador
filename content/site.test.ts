@@ -8,6 +8,7 @@ describe("site content", () => {
     expect(site.salas.salas).toHaveLength(5);
     expect(site.curadoria.principles).toHaveLength(3);
     expect(site.perguntas.themes).toHaveLength(10);
+    expect(site.perguntas.textStrong.length).toBeGreaterThan(0);
     expect(site.trilhas.steps).toHaveLength(4);
     expect(site.artigos.articles).toHaveLength(3);
     expect(site.faq.items).toHaveLength(4);

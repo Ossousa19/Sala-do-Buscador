@@ -65,7 +65,8 @@ export const site: SiteContent = {
   },
   perguntas: {
     title: "Perguntas que atravessam tradições",
-    text: "Espiritualidade, consciência, filosofia, textos antigos, símbolos e tradições. Organizados por tema, não por hierarquia.",
+    text: "Espiritualidade, consciência, filosofia, textos antigos, símbolos e tradições.",
+    textStrong: "Organizados por tema, não por hierarquia.",
     themes: ["Morte", "Alma", "Meditação", "Origem do universo", "Conhecimento interior", "Reencarnação", "Sofrimento", "Ética", "Oração", "Consciência"],
     cta: acervo,
     image: "/images/perguntas/scene.webp",

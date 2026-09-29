@@ -30,7 +30,7 @@ export function Pill({ href, children, variant = "solid", external, className }:
 
 export function Tag({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-full border border-cream/20 bg-white/5 px-4 py-2.5 text-sm text-cream/80", className)}>
+    <span className={cn("inline-flex items-center rounded-full bg-[rgba(236,235,230,0.1)] px-4 py-2.5 text-sm font-medium text-white", className)}>
       {children}
     </span>
   );

@@ -18,7 +18,7 @@ export function Accordion({ items, defaultOpen = 0 }: { items: FaqItem[]; defaul
             key={item.question}
             className={cn(
               "rounded-[14px] border transition-[background-color,border-color] duration-300 ease-cinema",
-              isOpen ? "border-transparent bg-wine" : "border-cream bg-transparent",
+              isOpen ? "border-transparent bg-wine" : "border-cream/70 bg-transparent [@media(hover:hover)_and_(pointer:fine)]:hover:border-cream",
             )}
           >
             <h3>
@@ -31,21 +31,26 @@ export function Accordion({ items, defaultOpen = 0 }: { items: FaqItem[]; defaul
                 className="btn btn-row flex w-full items-center justify-between gap-6 rounded-[14px] px-5 py-4 text-left md:gap-[107px] md:px-[42px]"
               >
                 <span className="text-lg font-normal leading-snug text-[#ebebeb] md:text-xl">{item.question}</span>
+                {/* Chevron: always right, centred on the question block; points down when closed and
+                    turns 180° (up) when open, filling cream as the accent against the wine card. */}
                 <svg
                   aria-hidden="true"
-                  width="48"
-                  height="48"
+                  data-testid="faq-chevron"
+                  data-open={isOpen || undefined}
                   viewBox="0 0 48 48"
                   fill="none"
-                  className="shrink-0"
+                  className={cn(
+                    "size-10 shrink-0 self-center transition-transform duration-200 ease-ui motion-reduce:transition-none md:size-12",
+                    isOpen && "rotate-180",
+                  )}
                 >
-                  <circle cx="24" cy="24" r="24" className={cn("transition-[fill] duration-300 ease-cinema", isOpen ? "fill-cream" : "fill-wine")} />
+                  <circle cx="24" cy="24" r="23.5" className={cn("transition-[fill,stroke] duration-200 ease-ui", isOpen ? "fill-cream stroke-cream" : "fill-wine stroke-cream/25")} />
                   <path
-                    d="M14 29L23.9346 19.2404C24.0071 19.1645 24.0947 19.104 24.192 19.0627C24.2892 19.0213 24.394 19 24.5 19C24.606 19 24.7108 19.0213 24.808 19.0627C24.9053 19.104 24.9929 19.1645 25.0654 19.2404L35 29"
+                    d="M15 20L24 29L33 20"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={cn("transition-[stroke] duration-300 ease-cinema", isOpen ? "stroke-wine" : "stroke-cream")}
+                    className={cn("transition-[stroke] duration-200 ease-ui", isOpen ? "stroke-wine" : "stroke-cream")}
                   />
                 </svg>
               </button>

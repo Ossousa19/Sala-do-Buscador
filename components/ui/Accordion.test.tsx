@@ -46,4 +46,14 @@ describe("Accordion", () => {
     await userEvent.keyboard("{Enter}");
     expect(screen.getByText("Resposta B")).toBeInTheDocument();
   });
+
+  it("the chevron turns 180° only on the open item", async () => {
+    render(<Accordion items={items} />);
+    const [a, b] = screen.getAllByTestId("faq-chevron");
+    expect(a).toHaveClass("rotate-180");
+    expect(b).not.toHaveClass("rotate-180");
+    await userEvent.click(screen.getByRole("button", { name: "Pergunta B" }));
+    expect(screen.getAllByTestId("faq-chevron")[0]).not.toHaveClass("rotate-180");
+    expect(screen.getAllByTestId("faq-chevron")[1]).toHaveClass("rotate-180");
+  });
 });

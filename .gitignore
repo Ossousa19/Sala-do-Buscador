@@ -49,3 +49,6 @@ shots/
 /test-results/
 /playwright-report/
 public/images/hero/door-still.png
+
+# stray local permissions copy (not part of the project)
+/Sala_Buscadores

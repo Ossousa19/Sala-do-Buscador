@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { site } from "@/content/site";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 
 const gambetta = localFont({
@@ -21,8 +22,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "A Sala dos Buscadores",
-  description: "Um portal que organiza tradições religiosas, espirituais e filosóficas em Salas comparáveis.",
+  title: site.meta.title,
+  description: site.meta.description,
+  openGraph: { title: site.meta.title, description: site.meta.description, images: [site.meta.ogImage], locale: "pt_BR", type: "website" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

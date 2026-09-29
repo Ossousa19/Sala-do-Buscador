@@ -12,6 +12,25 @@ describe("SplitText", () => {
     const hidden = document.querySelector("[aria-hidden='true']")!;
     expect(hidden.children).toHaveLength(3);
   });
+
+  it("reveals every word at the end of the range", () => {
+    render(<SplitText text="Curadoria de museu" progress={motionValue(0.2)} range={[0, 0.2]} />);
+    const words = Array.from(document.querySelector("[aria-hidden='true']")!.children) as HTMLElement[];
+    expect(words).toHaveLength(3);
+    for (const w of words) expect(w.style.opacity).toBe("1");
+  });
+
+  it("reveals a single word at the end of the range", () => {
+    render(<SplitText text="Porta" progress={motionValue(0.2)} range={[0, 0.2]} />);
+    const words = Array.from(document.querySelector("[aria-hidden='true']")!.children) as HTMLElement[];
+    expect(words).toHaveLength(1);
+    expect(words[0].style.opacity).toBe("1");
+  });
+
+  it("ignores repeated and trailing spaces", () => {
+    render(<SplitText text=" a  b " progress={motionValue(0)} range={[0, 0.2]} />);
+    expect(document.querySelector("[aria-hidden='true']")!.children).toHaveLength(2);
+  });
 });
 
 describe("TwoToneTitle", () => {

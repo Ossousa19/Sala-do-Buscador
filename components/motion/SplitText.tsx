@@ -4,15 +4,17 @@ import { motion, useTransform, type MotionValue } from "motion/react";
 type Props = { text: string; progress: MotionValue<number>; range: [number, number]; reduced?: boolean; className?: string };
 
 export function SplitText({ text, progress, range, reduced = false, className }: Props) {
-  const words = text.split(" ");
+  const words = text.trim().split(/\s+/);
   const [start, end] = range;
-  const step = (end - start) / words.length;
+  const n = words.length;
+  const span = Math.min((2 * (end - start)) / n, end - start);
+  const stride = (end - start - span) / Math.max(n - 1, 1);
   return (
     <span className={className}>
       <span className="sr-only">{text}</span>
       <span aria-hidden="true">
         {words.map((word, i) => (
-          <Word key={`${word}-${i}`} word={word} progress={progress} from={start + i * step} to={start + (i + 2) * step} reduced={reduced} />
+          <Word key={`${word}-${i}`} word={word} progress={progress} from={start + i * stride} to={i === n - 1 ? end : start + i * stride + span} reduced={reduced} />
         ))}
       </span>
     </span>

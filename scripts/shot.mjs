@@ -1,12 +1,13 @@
 import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
-const [, , id = "inicio", progress = "0", width = "1440"] = process.argv;
+const [, , id = "inicio", progress = "0", width = "1440", height] = process.argv;
 const w = Number(width);
 mkdirSync("shots", { recursive: true });
-const out = `shots/${id}-${progress}-${w}.png`;
+const h = height ? Number(height) : w < 768 ? 812 : 900;
+const out = height ? `shots/${id}-${progress}-${w}x${h}.png` : `shots/${id}-${progress}-${w}.png`;
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: w, height: w < 768 ? 812 : 900 } });
+const page = await browser.newPage({ viewport: { width: w, height: h } });
 const base = process.env.BASE_URL ?? "http://localhost:3111";
 await page.goto(base);
 await page.waitForLoadState("networkidle");

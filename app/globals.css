@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Viewports tall/wide enough for the Trilhas staircase to stay legible (k >= 0.85, see Trilhas.tsx) */
+@custom-variant stairs (@media (min-width: 1280px) and (min-height: 880px));
+
 @theme {
   --color-night: #0c0404;
   --color-cream: #f6e7ce;

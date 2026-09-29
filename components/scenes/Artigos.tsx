@@ -1,9 +1,9 @@
-import Image from "next/image";
 import type { ArtigosContent } from "@/content/types";
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { TwoToneTitle } from "@/components/motion/TwoToneTitle";
 import { ArticleCard } from "@/components/ui/ArticleCard";
 import { MuseumFrame } from "@/components/ui/MuseumFrame";
+import { Texture } from "@/components/ui/Texture";
 
 // Figma: heights 360 / 492 / 434 on a 360 width; vertical offsets 54 / 0 / 137
 const LAYOUT = [
@@ -15,9 +15,7 @@ const LAYOUT = [
 export function Artigos({ content }: { content: ArtigosContent }) {
   return (
     <section id="artigos" aria-labelledby="artigos-title" className="relative overflow-hidden bg-[#160404] py-[clamp(96px,10vw,140px)]">
-      <div aria-hidden="true" className="absolute left-1/2 top-1/2 aspect-square h-[200%] -translate-x-1/2 -translate-y-1/2 -rotate-90 opacity-[0.28]">
-        <Image src="/images/textures/velvet.webp" alt="" fill sizes="100vw" className="object-cover" />
-      </div>
+      <Texture src="/images/textures/velvet.webp" opacity={0.28} />
       <MuseumFrame tone="cream" />
       <div className="container-page relative">
         <div className="mx-auto max-w-[900px] text-center">

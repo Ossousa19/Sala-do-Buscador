@@ -21,12 +21,20 @@ const inter = Inter({
   display: "swap",
 });
 
+// Open Graph URLs need the real origin: NEXT_PUBLIC_SITE_URL, else Vercel's production domain.
+// Left undefined otherwise (Next then falls back to localhost in dev only).
+function siteUrl(): URL | undefined {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return new URL(process.env.NEXT_PUBLIC_SITE_URL);
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  return undefined;
+}
+
 export const metadata: Metadata = {
-  // Set NEXT_PUBLIC_SITE_URL in production so Open Graph URLs resolve to the real origin.
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3111"),
+  metadataBase: siteUrl(),
   title: site.meta.title,
   description: site.meta.description,
-  openGraph: { title: site.meta.title, description: site.meta.description, images: [site.meta.ogImage], locale: "pt_BR", type: "website" },
+  openGraph: { title: site.meta.title, description: site.meta.description, images: [{ url: site.meta.ogImage, width: 1200, height: 630, alt: site.meta.title }], locale: "pt_BR", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

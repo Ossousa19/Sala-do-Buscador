@@ -1,7 +1,7 @@
-import Image from "next/image";
 import type { ComunidadeContent } from "@/content/types";
 import { Marquee } from "@/components/motion/Marquee";
 import { Pill } from "@/components/ui/Pill";
+import { Texture } from "@/components/ui/Texture";
 
 // rows are full-bleed; alternating directions, different speeds
 const ROWS = [{ velocity: -2 }, { velocity: 2 }, { velocity: -1.5 }];
@@ -24,9 +24,7 @@ export function Comunidade({ content }: { content: ComunidadeContent }) {
   const [first, ...rest] = content.title.split(" ");
   return (
     <section id="comunidade" aria-labelledby="comunidade-title" className="relative overflow-hidden bg-cream pb-16 pt-[115px]">
-      <div aria-hidden="true" className="absolute left-1/2 top-1/2 aspect-square h-[200%] -translate-x-1/2 -translate-y-1/2 -rotate-90 opacity-[0.26]">
-        <Image src="/images/textures/comunidade.webp" alt="" fill sizes="100vw" className="object-cover" />
-      </div>
+      <Texture src="/images/textures/parchment.webp" opacity={0.26} />
       <div className="container-page relative mx-auto flex max-w-[426px] flex-col items-center text-center">
         <span className="rounded-[20px] border border-[#807f78] p-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-[#807f78]">{content.badge}</span>
         <h2 id="comunidade-title" className="mt-6 font-display text-[clamp(44px,4.3vw,62px)] font-medium leading-[0.87]">

@@ -139,6 +139,41 @@
   }
 }
 
+/* Floating header: 24px wider than the page container on each side (so its content lines up
+   with the container), never closer than 16px to the viewport edge. */
+@utility container-nav {
+  width: min(1232px, 100% - 2 * clamp(16px, 5vw, 128px) + 48px, 100% - 32px);
+  margin-inline: auto;
+}
+
+/* Animated underline for text links (header + footer): scaleX 0 → 1 from the left. */
+@utility link-underline {
+  position: relative;
+  border-radius: 2px;
+  transition: color 200ms var(--ease-ui);
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms var(--ease-ui);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition: none;
+    }
+  }
+}
+
 html {
   background: var(--color-night);
   color: var(--color-cream);

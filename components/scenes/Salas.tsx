@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { motion, useTransform, type MotionValue } from "motion/react";
 import type { SalasContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
@@ -10,6 +10,7 @@ import { heroFrameUrls } from "@/lib/heroFrames";
 import { holdRange, progressForItem, tunnelLayout } from "@/lib/motion/math";
 import { scrollToSceneProgress } from "@/lib/scrollToSceneProgress";
 import { useMediaQuery } from "@/lib/useMediaQuery";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 export const SALAS_TRACK = { desktop: 400, mobile: 260 };
 
@@ -52,7 +53,12 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
   const handoffOpacity = useTransform(progress, ...holdRange([0, 0.14], [1, 0]));
   const titleOpacity = useTransform(progress, [0, 0.06, 0.1, 0.18, 0.9, 1], [0, 1, 1, 0, 0, 1]);
 
-  const items: TunnelEntry[] = content.salas.map((sala, i) => {
+  // Card/background images stay off the critical path until the tunnel is about to be scrolled into view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(rootRef);
+
+  const items: TunnelEntry[] = content.salas.map((rawSala, i) => {
+    const sala = near ? rawSala : { ...rawSala, image: undefined };
     const pos = isMobile ? { x: 0, y: i % 2 ? 6 : -6 } : DESKTOP_POS[i % DESKTOP_POS.length];
     return {
       key: sala.id,
@@ -62,15 +68,17 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
   });
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div ref={rootRef} className="relative h-full w-full overflow-hidden">
       <motion.div aria-hidden="true" className="absolute inset-0" style={{ scale: bgScale }}>
-        <Image src="/images/salas/space.webp" alt="" fill sizes="100vw" className="object-cover" />
+        {near && <Image src="/images/salas/space.webp" alt="" fill sizes="100vw" className="object-cover" />}
       </motion.div>
       <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 6} className="absolute inset-0" />
       <motion.img
         aria-hidden="true"
         alt=""
         src={handoffFrame}
+        loading="lazy"
+        decoding="async"
         style={{ opacity: handoffOpacity, objectPosition: "50% 57%" }}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
       />

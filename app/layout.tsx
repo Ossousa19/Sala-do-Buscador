@@ -22,6 +22,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Set NEXT_PUBLIC_SITE_URL in production so Open Graph URLs resolve to the real origin.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3111"),
   title: site.meta.title,
   description: site.meta.description,
   openGraph: { title: site.meta.title, description: site.meta.description, images: [site.meta.ogImage], locale: "pt_BR", type: "website" },

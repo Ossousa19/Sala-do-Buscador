@@ -51,9 +51,25 @@ export function FrameSequence({ frames, progress, focalY = 0.5, className }: Pro
       img.src = frames[i];
       images.current[i] = img;
     };
-    for (let k = 0; k < CONCURRENCY; k++) next();
+    // Start only after the window load event plus an idle slot, so the frames never compete
+    // with the first paint / LCP (the door still is shown meanwhile).
+    let idleId = 0;
+    let timeoutId = 0;
+    const start = () => {
+      const kick = () => {
+        for (let k = 0; k < CONCURRENCY; k++) next();
+      };
+      if (typeof window.requestIdleCallback === "function") idleId = window.requestIdleCallback(kick, { timeout: 1500 });
+      else timeoutId = setTimeout(kick, 200) as unknown as number;
+    };
+    const ready = document.readyState === "complete";
+    if (ready) start();
+    else window.addEventListener("load", start, { once: true });
     return () => {
       cancelled = true;
+      window.removeEventListener("load", start);
+      if (idleId) window.cancelIdleCallback(idleId);
+      clearTimeout(timeoutId);
     };
   }, [frames, draw]);
 

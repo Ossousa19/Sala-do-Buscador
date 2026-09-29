@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { holdRange } from "@/lib/motion/math";
 import { cn } from "@/lib/cn";
 import { usePrefersReducedMotion } from "@/lib/useMediaQuery";
 
@@ -20,7 +21,7 @@ export function TwoToneTitle({ dim, lit, id, className, dimClassName, litClassNa
   const ref = useRef<HTMLHeadingElement>(null);
   const reduced = usePrefersReducedMotion();
   const own = useScroll({ target: ref, offset: ["start 85%", "start 35%"] }).scrollYProgress;
-  const litOpacity = useTransform(progress ?? own, range, [0.35, 1]);
+  const litOpacity = useTransform(progress ?? own, ...holdRange(range, [0.35, 1]));
   return (
     <h2 ref={ref} id={id} className={cn("font-display", className)}>
       <span className={dimClassName}>{dim}</span>

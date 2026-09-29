@@ -1,4 +1,5 @@
 "use client";
+import { holdRange } from "@/lib/motion/math";
 import { motion, useTransform, type MotionValue } from "motion/react";
 
 type Props = { text: string; progress: MotionValue<number>; range: [number, number]; reduced?: boolean; className?: string };
@@ -22,9 +23,9 @@ export function SplitText({ text, progress, range, reduced = false, className }:
 }
 
 function Word({ word, progress, from, to, reduced }: { word: string; progress: MotionValue<number>; from: number; to: number; reduced: boolean }) {
-  const opacity = useTransform(progress, [from, to], [0, 1]);
-  const y = useTransform(progress, [from, to], ["0.35em", "0em"]);
-  const filter = useTransform(progress, [from, to], ["blur(8px)", "blur(0px)"]);
+  const opacity = useTransform(progress, ...holdRange([from, to], [0, 1]));
+  const y = useTransform(progress, ...holdRange([from, to], ["0.35em", "0em"]));
+  const filter = useTransform(progress, ...holdRange([from, to], ["blur(8px)", "blur(0px)"]));
   return (
     <motion.span className="mr-[0.25em] inline-block last:mr-0" style={reduced ? undefined : { opacity, y, filter }}>
       {word}

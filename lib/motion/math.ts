@@ -84,3 +84,19 @@ export function wrap(min: number, max: number, v: number): number {
   const range = max - min;
   return ((((v - min) % range) + range) % range) + min;
 }
+
+/** Pads a scroll-linked range to 0..1 holding edge values (avoids implicit WAAPI keyframes). */
+export function holdRange<T>(input: readonly number[], output: readonly T[]): [number[], T[]] {
+  if (input.length !== output.length) throw new Error("holdRange: input and output lengths differ");
+  const i = [...input];
+  const o = [...output];
+  if (i.length && i[0] > 0) {
+    i.unshift(0);
+    o.unshift(output[0]);
+  }
+  if (i.length && i[i.length - 1] < 1) {
+    i.push(1);
+    o.push(output[output.length - 1]);
+  }
+  return [i, o];
+}

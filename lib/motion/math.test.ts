@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   clamp, coverRect, frameLoadOrder, indexAtProgress, nearestLoaded,
-  progressForItem, progressToFrame, tunnelLayout, tunnelVisual, wrap,
+  holdRange, progressForItem, progressToFrame, tunnelLayout, tunnelVisual, wrap,
 } from "./math";
 
 describe("clamp", () => {
@@ -95,5 +95,18 @@ describe("wrap", () => {
     expect(wrap(-50, 0, -60)).toBe(-10);
     expect(wrap(-50, 0, 10)).toBe(-40);
     expect(wrap(-50, 0, -25)).toBe(-25);
+  });
+});
+
+describe("holdRange", () => {
+  it("pads a mid-range to 0..1 holding the edge values", () => {
+    expect(holdRange([0.2, 0.6], [1, 0])).toEqual([[0, 0.2, 0.6, 1], [1, 1, 0, 0]]);
+  });
+  it("leaves ranges already at 0 and 1 unchanged", () => {
+    expect(holdRange([0, 0.1], ["a", "b"])).toEqual([[0, 0.1, 1], ["a", "b", "b"]]);
+    expect(holdRange([0, 1], [3, 4])).toEqual([[0, 1], [3, 4]]);
+  });
+  it("throws on length mismatch", () => {
+    expect(() => holdRange([0, 1], [1])).toThrow("holdRange: input and output lengths differ");
   });
 });

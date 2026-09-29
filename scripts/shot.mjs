@@ -7,8 +7,11 @@ mkdirSync("shots", { recursive: true });
 const out = `shots/${id}-${progress}-${w}.png`;
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: w, height: w < 768 ? 812 : 900 } });
-await page.goto("http://localhost:3000");
+const base = process.env.BASE_URL ?? "http://localhost:3111";
+await page.goto(base);
 await page.waitForLoadState("networkidle");
+const title = await page.title();
+if (!title.includes("A Sala dos Buscadores")) throw new Error(`${base} is not this app (title: "${title}")`);
 await page.evaluate(([sectionId, p]) => {
   const el = document.getElementById(sectionId);
   if (!el) throw new Error(`section #${sectionId} not found`);

@@ -26,13 +26,16 @@ function HeroStage({ content, progress, reduced }: { content: HeroContent; progr
   const isMobile = useMediaQuery("(max-width: 767px)");
   const frames = useMemo(() => heroFrameUrls(isMobile ? "mobile" : "desktop"), [isMobile]);
 
-  const leftX = useTransform(progress, [0.08, 0.5], ["0vw", "-45vw"]);
-  const rightX = useTransform(progress, [0.08, 0.5], ["0vw", "45vw"]);
-  const copyOpacity = useTransform(progress, [0.08, 0.4], [1, 0]);
-  const copyBlur = useTransform(progress, [0.08, 0.4], ["blur(0px)", "blur(14px)"]);
-  const ctaOpacity = useTransform(progress, [0, 0.1], [1, 0]);
+  // Every range spans 0..1 with an explicit held end value: Motion runs scroll-linked
+  // opacity/transform through WAAPI, and a range ending before 1 gets an implicit final
+  // keyframe at the element's base value, which made the CTA reappear mid-scene.
+  const leftX = useTransform(progress, [0, 0.08, 0.5, 1], ["0vw", "0vw", "-45vw", "-45vw"]);
+  const rightX = useTransform(progress, [0, 0.08, 0.5, 1], ["0vw", "0vw", "45vw", "45vw"]);
+  const copyOpacity = useTransform(progress, [0, 0.08, 0.4, 1], [1, 1, 0, 0]);
+  const copyBlur = useTransform(progress, [0, 0.08, 0.4, 1], ["blur(0px)", "blur(0px)", "blur(14px)", "blur(14px)"]);
+  const ctaOpacity = useTransform(progress, [0, 0.1, 1], [1, 0, 0]);
   const ctaEvents = useTransform(ctaOpacity, (o) => (o < 0.05 ? "none" : "auto"));
-  const shade = useTransform(progress, [0.2, 0.6], [1, 0]);
+  const shade = useTransform(progress, [0, 0.2, 0.6, 1], [1, 1, 0, 0]);
   const on = <T,>(v: T) => (reduced ? undefined : v);
 
   return (

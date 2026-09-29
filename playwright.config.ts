@@ -3,10 +3,10 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "e2e",
   timeout: 90_000,
-  use: { baseURL: "http://localhost:3000" },
+  use: { baseURL: "http://localhost:3111" },
   webServer: {
     command: "npm run build && npm run start",
-    url: "http://localhost:3000",
+    url: "http://localhost:3111",
     reuseExistingServer: true,
     timeout: 240_000,
   },

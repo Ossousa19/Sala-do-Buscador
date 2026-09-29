@@ -20,6 +20,16 @@ describe("Nav", () => {
     expect(btn).toHaveAttribute("aria-expanded", "true");
     expect(document.getElementById("menu-mobile")).toBeInTheDocument();
   });
+
+  it("closes the mobile menu on Escape and returns focus to the button", async () => {
+    render(<Nav nav={site.nav} />);
+    const btn = screen.getByRole("button", { name: "Menu" });
+    await userEvent.click(btn);
+    await userEvent.keyboard("{Escape}");
+    expect(document.getElementById("menu-mobile")).not.toBeInTheDocument();
+    expect(btn).toHaveAttribute("aria-expanded", "false");
+    expect(btn).toHaveFocus();
+  });
 });
 
 describe("HeroDoor", () => {

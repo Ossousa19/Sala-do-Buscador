@@ -25,6 +25,7 @@ export function Curadoria({ content }: { content: CuradoriaContent }) {
 
 function CuradoriaStage({ content, progress, reduced }: { content: CuradoriaContent; progress: MotionValue<number>; reduced: boolean }) {
   const [active, setActive] = useState(0);
+  const [announce, setAnnounce] = useState("");
   const n = content.principles.length;
   useMotionValueEvent(progress, "change", (v) => {
     if (!reduced) setActive(indexAtProgress(v, PRINCIPLE_STARTS));
@@ -34,18 +35,21 @@ function CuradoriaStage({ content, progress, reduced }: { content: CuradoriaCont
 
   const go = (i: number) => {
     const idx = (i + n) % n;
+    setAnnounce(`${content.principles[idx].number}. ${content.principles[idx].title}`);
     if (reduced) setActive(idx);
     else scrollToSceneProgress("curadoria", PRINCIPLE_STARTS[idx] + 0.02);
   };
   const principle = content.principles[active];
 
   return (
-    <motion.div style={{ clipPath: reduced ? undefined : clip }} className="relative h-full min-h-svh w-full overflow-hidden bg-parchment text-charcoal">
-      <Image src="/images/textures/parchment.webp" alt="" fill sizes="100vw" className="object-cover" />
+    <motion.div style={{ clipPath: reduced ? undefined : clip }} className="relative h-full min-h-svh w-full overflow-hidden bg-cream text-charcoal">
+      <div aria-hidden="true" className="absolute left-1/2 top-1/2 h-[100vw] w-[100svh] -translate-x-1/2 -translate-y-1/2 -rotate-90 opacity-[0.26]">
+        <Image src="/images/textures/parchment.webp" alt="" fill sizes="100vw" className="object-cover" />
+      </div>
       <MuseumFrame tone="ink" />
       <div className="container-page relative flex min-h-svh flex-col justify-between gap-12 py-[12vh]">
-        <div className="mx-auto flex max-w-[765px] flex-col items-center gap-10 text-center">
-          <h2 id="curadoria-title" className="font-display text-[clamp(44px,5.7vw,82px)] leading-[0.8]">
+        <div className="mx-auto flex max-w-[765px] flex-col items-center gap-[42px] text-center">
+          <h2 id="curadoria-title" className="font-display text-[clamp(44px,5.7vw,82px)] leading-[0.72]">
             <SplitText text={content.titleDim} progress={progress} range={[0.06, 0.14]} reduced={reduced} className="text-ink/60" />
             {" "}
             <br />
@@ -57,31 +61,32 @@ function CuradoriaStage({ content, progress, reduced }: { content: CuradoriaCont
 
         <motion.div style={{ opacity: reduced ? 1 : principlesOpacity }} className="flex items-end justify-between gap-8">
           <div className="max-w-[654px]">
-            <div aria-live="polite">
+            <div>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={active}
                   initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <span aria-hidden="true" className="block font-display text-[clamp(72px,9vw,134px)] leading-[0.7] text-charcoal/30">
+                  <span aria-hidden="true" className="block font-display mb-[-34px] text-[clamp(72px,9.2vw,133px)] leading-[1.01] text-charcoal/20">
                     {principle.number}
                   </span>
-                  <h3 className="-mt-4 font-display text-[clamp(28px,2.6vw,36px)] leading-none text-charcoal">{principle.title}</h3>
-                  <p className="mt-8 text-[clamp(16px,1.5vw,22px)] font-light leading-snug text-charcoal/70">{principle.text}</p>
+                  <h3 className="relative max-w-[360px] font-display text-[clamp(30px,2.9vw,42px)] leading-[1.01] text-charcoal">{principle.title}</h3>
+                  <p className="mt-[42px] text-[clamp(16px,1.67vw,24px)] font-light leading-[1.24] text-charcoal/60">{principle.text}</p>
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div className="mt-10 flex gap-2">
+            <div aria-live="polite" className="sr-only">{announce}</div>
+            <div className="mt-[42px] flex gap-[9px]">
               <ArrowButton dir="prev" label="Princípio anterior" onClick={() => go(active - 1)} />
               <ArrowButton dir="next" label="Próximo princípio" onClick={() => go(active + 1)} />
             </div>
           </div>
-          <ol className="hidden flex-col gap-2.5 text-right font-display text-[40px] leading-none md:flex">
+          <ol className="hidden flex-col gap-2.5 text-right font-display text-[40px] leading-[1.01] md:flex">
             {content.principles.map((p, i) => (
-              <li key={p.number} aria-current={i === active ? "step" : undefined} className={cn("transition-colors duration-300", i === active ? "text-charcoal" : "text-charcoal/30")}>
+              <li key={p.number} aria-current={i === active ? "step" : undefined} className={cn("transition-colors duration-300", i === active ? "text-charcoal" : "text-charcoal/40")}>
                 {p.number}
               </li>
             ))}

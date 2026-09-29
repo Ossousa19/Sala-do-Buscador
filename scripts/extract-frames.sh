@@ -4,6 +4,8 @@
 set -euo pipefail
 SRC="${1:?usage: extract-frames.sh <video>}"
 OUT="public/frames/hero"
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$SRC")
 
 extract() {
@@ -12,13 +14,11 @@ extract() {
   local fps
   fps=$(awk -v c="$count" -v d="$DUR" 'BEGIN { printf "%.4f", c / d }')
   # ffmpeg builds without libwebp: extract PNG frames, then encode each with cwebp.
-  local tmp
-  tmp=$(mktemp -d)
-  ffmpeg -v error -i "$SRC" -vf "fps=$fps,$filter" "$tmp/frame_%04d.png"
-  for f in "$tmp"/frame_*.png; do
+  rm -rf "${TMP:?}"/* 
+  ffmpeg -v error -i "$SRC" -vf "fps=$fps,$filter" "$TMP/frame_%04d.png"
+  for f in "$TMP"/frame_*.png; do
     cwebp -quiet -q "$quality" -m 6 "$f" -o "$OUT/$variant/$(basename "${f%.png}").webp"
   done
-  rm -rf "$tmp"
   find "$OUT/$variant" -name '*.webp' | wc -l | tr -d ' '
 }
 

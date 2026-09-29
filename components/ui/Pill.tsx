@@ -4,8 +4,8 @@ import { cn } from "@/lib/cn";
 type Variant = "solid" | "glass" | "outline";
 
 const variants: Record<Variant, string> = {
-  solid: "bg-white px-5 py-2.5 text-wine hover:bg-cream focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_#0c0404,0_0_0_4px_#f6e7ce]",
-  glass: "bg-black/20 px-7 py-3 text-white backdrop-blur-md hover:bg-black/35 focus-visible:outline-none focus-visible:shadow-[0_0_0_2px_#0c0404,0_0_0_4px_#f6e7ce]",
+  solid: "bg-white px-5 py-2.5 text-wine hover:bg-cream focus-visible:outline-transparent focus-visible:shadow-[0_0_0_2px_#0c0404,0_0_0_4px_#f6e7ce]",
+  glass: "bg-black/20 px-7 py-3 text-white backdrop-blur-md hover:bg-black/35 focus-visible:outline-transparent focus-visible:shadow-[0_0_0_2px_#0c0404,0_0_0_4px_#f6e7ce]",
   outline: "border border-wine bg-transparent px-5 py-3 text-wine hover:bg-wine/5 focus-visible:outline-wine",
 };
 

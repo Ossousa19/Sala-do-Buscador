@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "solid" | "glass";
+type Variant = "solid" | "glass" | "outline";
 
 const variants: Record<Variant, string> = {
   solid: "bg-white px-5 py-2.5 text-wine hover:bg-cream",
   glass: "bg-black/20 px-7 py-3 text-white backdrop-blur-md hover:bg-black/35",
+  outline: "border border-wine bg-transparent px-5 py-3 text-wine hover:bg-wine/5 focus-visible:outline-wine",
 };
 
 export function Pill({ href, children, variant = "solid", external, className }: {

@@ -6,6 +6,7 @@ import { Curadoria } from "@/components/scenes/Curadoria";
 import { Perguntas } from "@/components/scenes/Perguntas";
 import { Trilhas } from "@/components/scenes/Trilhas";
 import { Artigos } from "@/components/scenes/Artigos";
+import { Comunidade } from "@/components/scenes/Comunidade";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <Perguntas content={site.perguntas} />
         <Trilhas content={site.trilhas} />
         <Artigos content={site.artigos} />
+        <Comunidade content={site.comunidade} />
       </main>
     </>
   );

@@ -1,39 +1,56 @@
 "use client";
 import Image from "next/image";
-import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useRef, useState } from "react";
+import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import type { FooterContent } from "@/content/types";
 import { cn } from "@/lib/cn";
 import { holdRange } from "@/lib/motion/math";
-import { usePrefersReducedMotion } from "@/lib/useMediaQuery";
+import { useMediaQuery, usePrefersReducedMotion } from "@/lib/useMediaQuery";
 
-const HEIGHT = "h-[900px] md:h-[753px]";
+const HEIGHT = "h-[753px]";
 const EMBOSS = "2.183px -2.183px 2.183px rgba(255,255,255,0.06)";
 const LINE_SIZE = [
   "text-[clamp(44px,14.4vw,207px)]",
   "text-[clamp(38px,12.3vw,177px)]",
 ];
 
-export function FooterCurtain({ content }: { content: FooterContent }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = usePrefersReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
+const CURTAIN_QUERY = "(min-width: 768px) and (min-height: 780px)";
+const OFFSET: ["start end", "end end"] = ["start end", "end end"];
 
-  if (reduced) {
-    return <FooterBody content={content} progress={scrollYProgress} reduced />;
-  }
+export function FooterCurtain({ content }: { content: FooterContent }) {
+  const reduced = usePrefersReducedMotion();
+  const curtain = useMediaQuery(CURTAIN_QUERY);
+  if (reduced) return <StaticFooter content={content} animated={false} />;
+  return curtain ? <CurtainFooter content={content} /> : <StaticFooter content={content} animated />;
+}
+
+function CurtainFooter({ content }: { content: FooterContent }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: OFFSET });
+  const [hidden, setHidden] = useState(true);
+  useMotionValueEvent(scrollYProgress, "change", (v) => setHidden(v <= 0.02));
   return (
     <div ref={ref} className={cn("relative", HEIGHT)} style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}>
-      <div className={cn("fixed bottom-0 left-0 w-full", HEIGHT)}>
-        <FooterBody content={content} progress={scrollYProgress} reduced={false} />
+      <div className={cn("fixed bottom-0 left-0 w-full", HEIGHT)} inert={hidden}>
+        <FooterBody content={content} progress={scrollYProgress} reduced={false} className={HEIGHT} />
       </div>
     </div>
   );
 }
 
-function FooterBody({ content, progress, reduced }: { content: FooterContent; progress: MotionValue<number>; reduced: boolean }) {
+function StaticFooter({ content, animated }: { content: FooterContent; animated: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: animated ? ref : undefined, offset: OFFSET });
   return (
-    <footer className={cn("flex flex-col justify-between bg-[#111313] py-16", HEIGHT)}>
+    <div ref={ref}>
+      <FooterBody content={content} progress={scrollYProgress} reduced={!animated} className="h-auto gap-16" />
+    </div>
+  );
+}
+
+function FooterBody({ content, progress, reduced, className }: { content: FooterContent; progress: MotionValue<number>; reduced: boolean; className: string }) {
+  return (
+    <footer className={cn("flex flex-col justify-between bg-[#111313] py-16", className)}>
       <div className="container-page flex flex-col gap-12 md:flex-row md:justify-between">
         <div className="max-w-[291px]">
           <Image src="/images/brand/logo.svg" alt="A Sala dos Buscadores" width={191} height={58} className="h-auto w-[191px]" />

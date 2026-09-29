@@ -1,0 +1,100 @@
+"use client";
+import Image from "next/image";
+import { useMemo } from "react";
+import { motion, useTransform, type MotionValue } from "motion/react";
+import type { SalasContent } from "@/content/types";
+import { SceneTrack } from "@/components/motion/SceneTrack";
+import { DepthTunnel, type TunnelEntry } from "@/components/motion/DepthTunnel";
+import { SalaCard } from "@/components/ui/SalaCard";
+import { heroFrameUrls } from "@/lib/heroFrames";
+import { holdRange, progressForItem, tunnelLayout } from "@/lib/motion/math";
+import { scrollToSceneProgress } from "@/lib/scrollToSceneProgress";
+import { useMediaQuery } from "@/lib/useMediaQuery";
+
+export const SALAS_TRACK = { desktop: 400, mobile: 260 };
+
+// Positions (vw, vh) relative to the center, following the Figma composition (196:47)
+const DESKTOP_POS = [
+  { x: -22, y: -18 },
+  { x: 22, y: -16 },
+  { x: -20, y: 18 },
+  { x: 18, y: 20 },
+  { x: 0, y: -4 },
+];
+
+export function Salas({ content }: { content: SalasContent }) {
+  return (
+    <SceneTrack id="salas" labelledBy="salas-title" heights={SALAS_TRACK} className="bg-night">
+      {(progress, reduced) => (reduced ? <SalasGrid content={content} /> : <SalasTunnel content={content} progress={progress} />)}
+    </SceneTrack>
+  );
+}
+
+function SalasTitle({ content }: { content: SalasContent }) {
+  return (
+    <div className="text-center">
+      <h2 id="salas-title" className="font-display text-[clamp(36px,3.8vw,56px)] leading-none text-bone">{content.title}</h2>
+      <p className="mx-auto mt-6 max-w-[356px] text-sm font-light leading-snug text-bone/60">{content.subtitle}</p>
+    </div>
+  );
+}
+
+function SalasTunnel({ content, progress }: { content: SalasContent; progress: MotionValue<number> }) {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const layout = useMemo(
+    // start >= the visibility horizon (4200) so no card shows before the title has faded
+    () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 3000, exit: 900 } : { start: 3800 }),
+    [content.salas.length, isMobile],
+  );
+  const bgScale = useTransform(progress, [0, 1], [1, 1.25]);
+  // Hero handoff: the last Hero frame sits on top and dissolves into the Salas sky.
+  const handoffFrame = useMemo(() => heroFrameUrls(isMobile ? "mobile" : "desktop").at(-1), [isMobile]);
+  const handoffOpacity = useTransform(progress, ...holdRange([0, 0.14], [1, 0]));
+  const titleOpacity = useTransform(progress, [0, 0.06, 0.1, 0.18, 0.9, 1], [0, 1, 1, 0, 0, 1]);
+
+  const items: TunnelEntry[] = content.salas.map((sala, i) => {
+    const pos = isMobile ? { x: 0, y: i % 2 ? 6 : -6 } : DESKTOP_POS[i % DESKTOP_POS.length];
+    return {
+      key: sala.id,
+      ...pos,
+      node: <SalaCard sala={sala} size="tunnel" onFocus={() => scrollToSceneProgress("salas", progressForItem(i, layout), "instant")} />,
+    };
+  });
+
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      <motion.div aria-hidden="true" className="absolute inset-0" style={{ scale: bgScale }}>
+        <Image src="/images/salas/space.webp" alt="" fill sizes="100vw" className="object-cover" />
+      </motion.div>
+      <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 6} className="absolute inset-0" />
+      <motion.img
+        aria-hidden="true"
+        alt=""
+        src={handoffFrame}
+        style={{ opacity: handoffOpacity, objectPosition: "50% 57%" }}
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
+      <motion.div style={{ opacity: titleOpacity }} className="pointer-events-none absolute inset-0 grid place-items-center px-4">
+        <SalasTitle content={content} />
+      </motion.div>
+    </div>
+  );
+}
+
+function SalasGrid({ content }: { content: SalasContent }) {
+  return (
+    <div className="relative overflow-hidden py-28">
+      <Image src="/images/salas/space.webp" alt="" fill sizes="100vw" className="object-cover" />
+      <div className="container-page relative">
+        <SalasTitle content={content} />
+        <ul className="mt-16 grid gap-6 md:grid-cols-2">
+          {content.salas.map((sala) => (
+            <li key={sala.id}>
+              <SalaCard sala={sala} size="grid" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}

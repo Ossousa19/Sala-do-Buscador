@@ -38,11 +38,12 @@ export function nearestLoaded(target: number, loaded: readonly boolean[]): numbe
   return -1;
 }
 
-export function coverRect(iw: number, ih: number, cw: number, ch: number, focalY = 0.5) {
+/** object-fit: cover; focalX/focalY (0..1) work like object-position percentages. */
+export function coverRect(iw: number, ih: number, cw: number, ch: number, focalY = 0.5, focalX = 0.5) {
   const scale = Math.max(cw / iw, ch / ih);
   const dw = iw * scale;
   const dh = ih * scale;
-  return { dx: (cw - dw) / 2, dy: ((ch - dh) * focalY) || 0, dw, dh };
+  return { dx: ((cw - dw) * focalX) || 0, dy: ((ch - dh) * focalY) || 0, dw, dh };
 }
 
 export type TunnelLayout = { zs: number[]; total: number };

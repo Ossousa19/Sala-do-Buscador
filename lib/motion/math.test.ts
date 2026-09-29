@@ -57,6 +57,11 @@ describe("coverRect", () => {
     expect(coverRect(100, 200, 100, 100, 0)).toEqual({ dx: 0, dy: 0, dw: 100, dh: 200 });
     expect(coverRect(100, 200, 100, 100, 1)).toEqual({ dx: 0, dy: -100, dw: 100, dh: 200 });
   });
+  it("respects focalX when cropping horizontally (like object-position x%)", () => {
+    expect(coverRect(200, 100, 100, 100, 0.5, 0)).toEqual({ dx: 0, dy: 0, dw: 200, dh: 100 });
+    expect(coverRect(200, 100, 100, 100, 0.5, 1)).toEqual({ dx: -100, dy: 0, dw: 200, dh: 100 });
+    expect(coverRect(200, 100, 100, 100, 0.5, 0.25)).toEqual({ dx: -25, dy: 0, dw: 200, dh: 100 });
+  });
 });
 
 describe("tunnel", () => {

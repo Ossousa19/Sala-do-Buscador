@@ -6,6 +6,7 @@ import type { SalasContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
 import { DepthTunnel, type TunnelEntry } from "@/components/motion/DepthTunnel";
 import { SalaCard } from "@/components/ui/SalaCard";
+import { CosmosVideo } from "@/components/motion/CosmosVideo";
 import { heroFrameUrls } from "@/lib/heroFrames";
 import { holdRange, progressForItem, tunnelLayout } from "@/lib/motion/math";
 import { useMediaQuery } from "@/lib/useMediaQuery";
@@ -71,7 +72,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
   return (
     <div ref={rootRef} className="relative h-full w-full overflow-hidden">
       <motion.div aria-hidden="true" className="absolute inset-0" style={{ scale: bgScale }}>
-        {near && <Image src="/images/salas/space.webp" alt="" fill sizes="100vw" className="object-cover" />}
+        {near && <CosmosVideo />}
       </motion.div>
       <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 6} className="absolute inset-0" />
       <motion.img

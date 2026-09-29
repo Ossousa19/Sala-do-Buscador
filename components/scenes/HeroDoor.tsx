@@ -11,8 +11,16 @@ import { useMediaQuery } from "@/lib/useMediaQuery";
 
 export const HERO_TRACK = { desktop: 400, mobile: 240 };
 
+// Desktop: Figma's side shade (hides the still's side panels, frames the arch).
 const SIDE_SHADE =
   "linear-gradient(90deg,#0c0404 0%,#0c0404 11.7%,rgba(12,4,4,0) 41%,rgba(12,4,4,0) 59%,#0c0404 88.3%,#0c0404 100%)";
+// Mobile (portrait): the arch fills the width, so the side shade would black it out. Shade only
+// the top (title) and bottom (description, CTA, tagline) bands instead.
+const MOBILE_SHADE =
+  "linear-gradient(180deg,rgba(12,4,4,0.75) 0%,rgba(12,4,4,0.25) 32%,rgba(12,4,4,0) 45%,rgba(12,4,4,0.35) 58%,rgba(12,4,4,0.9) 100%)";
+// Door opening centre in the still (x 50%, y 57%): the still, the canvas frames and the Salas
+// handoff frame all crop around it.
+export const HERO_FOCAL = { x: 0.5, y: 0.57 };
 
 export function HeroDoor({ content }: { content: HeroContent }) {
   return (
@@ -42,9 +50,9 @@ function HeroStage({ content, progress, reduced }: { content: HeroContent; progr
 
   return (
     <div className="relative h-svh min-h-[560px] w-full overflow-hidden bg-night">
-      <Image src="/images/hero/door-still.webp" alt="" fill priority sizes="100vw" className="object-cover" />
-      {!reduced && <FrameSequence frames={frames} progress={progress} focalY={0.57} className="absolute inset-0 h-full w-full" />}
-      <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ backgroundImage: SIDE_SHADE, opacity: on(shade) }} />
+      <Image src="/images/hero/door-still.webp" alt="" fill priority sizes="100vw" className="object-cover" style={{ objectPosition: `${HERO_FOCAL.x * 100}% ${HERO_FOCAL.y * 100}%` }} />
+      {!reduced && <FrameSequence frames={frames} progress={progress} focalX={HERO_FOCAL.x} focalY={HERO_FOCAL.y} className="absolute inset-0 h-full w-full" />}
+      <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ backgroundImage: isMobile ? MOBILE_SHADE : SIDE_SHADE, opacity: on(shade) }} />
 
       <div className="container-page relative flex h-full flex-col justify-between pb-10 pt-[18vh] md:pb-12 md:pt-[24vh]">
         <motion.h1

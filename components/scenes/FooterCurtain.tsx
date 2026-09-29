@@ -8,7 +8,10 @@ import { holdRange } from "@/lib/motion/math";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/useMediaQuery";
 
 const HEIGHT = "h-[753px]";
-const EMBOSS = "2.183px -2.183px 2.183px rgba(255,255,255,0.06)";
+// Engraved wordmark: cream at ~12% (visible, still recessive) + Figma's top-right highlight and
+// a dark bottom-left edge. Decorative (aria-hidden); the sr-only copy carries the text.
+const WORDMARK_COLOR = "rgba(246,231,206,0.12)";
+const EMBOSS = "2.183px -2.183px 2.183px rgba(255,255,255,0.08), -1.5px 1.5px 1.5px rgba(0,0,0,0.55)";
 const LINE_SIZE = [
   "text-[clamp(44px,14.4vw,207px)]",
   "text-[clamp(38px,12.3vw,177px)]",
@@ -64,14 +67,14 @@ function FooterBody({ content, progress, reduced, className }: { content: Footer
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:flex md:gap-[84px]">
           {content.columns.map((col) => (
             <nav key={col.title} aria-label={col.title} className="flex flex-col gap-4">
-              <p className="text-base text-white/50">{col.title}</p>
+              <p className="text-base text-white/70">{col.title}</p>
               <ul className="flex flex-col gap-4 pointer-coarse:gap-0">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       {...(link.external && link.href !== "#" ? { target: "_blank", rel: "noreferrer" } : {})}
-                      className="inline-block text-base leading-[23.4px] text-white pointer-coarse:py-[11px] transition-colors duration-200 hover:text-white/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="link-underline inline-block text-base leading-[23.4px] text-white/85 pointer-coarse:py-[11px] hover:text-cream focus-visible:text-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}
                     </a>
@@ -85,12 +88,12 @@ function FooterBody({ content, progress, reduced, className }: { content: Footer
 
       <div className="container-page">
         <p className="sr-only">{content.wordmark.join(" ")}</p>
-        <div aria-hidden="true" className="font-display font-medium uppercase leading-[0.85] text-[#111313]" style={{ textShadow: EMBOSS }}>
+        <div aria-hidden="true" data-testid="footer-wordmark" className="font-display font-medium uppercase leading-[0.85]" style={{ color: WORDMARK_COLOR, textShadow: EMBOSS }}>
           {content.wordmark.map((line, li) => (
             <WordmarkLine key={line} text={line} progress={progress} lineIndex={li} reduced={reduced} />
           ))}
         </div>
-        <div className="mt-8 flex flex-col gap-2 text-[15.8px] text-white/50 md:flex-row md:justify-between">
+        <div className="mt-8 flex flex-col gap-2 text-[15.8px] text-white/70 md:flex-row md:justify-between">
           <span>{content.copyright}</span>
           <span>{content.credit}</span>
         </div>

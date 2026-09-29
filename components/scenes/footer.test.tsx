@@ -12,6 +12,14 @@ describe("FooterCurtain", () => {
     expect(screen.getByRole("navigation", { name: "Menu" })).toBeInTheDocument();
     expect(screen.getByText("A SALA DOS BUSCADORES", { selector: ".sr-only" })).toBeInTheDocument();
   });
+
+  it("the decorative wordmark is visible (not painted in the footer background colour)", () => {
+    render(<FooterCurtain content={site.footer} />);
+    const mark = screen.getByTestId("footer-wordmark");
+    expect(mark).toHaveAttribute("aria-hidden", "true");
+    expect(mark.style.color).not.toBe("");
+    expect(mark.style.color.replace(/\s/g, "")).not.toBe("rgb(17,19,19)");
+  });
 });
 
 describe("FooterCurtain fallback", () => {

@@ -16,6 +16,9 @@ const STEP_POS = [
 ];
 export const STAIR_PATH = "M3 32 V203 H291 V372 H580 V542 H868 V714 H1157";
 export const STEP_THRESHOLDS = [0.12, 0.34, 0.56, 0.78];
+const STEP_REVEAL = 0.08; // a step is fully lit at threshold + STEP_REVEAL
+// Title lit and the first step revealed: anchors land here.
+export const TRILHAS_REVEAL = STEP_THRESHOLDS[0] + STEP_REVEAL;
 
 const STAIR_W = 1157;
 const STAIR_H = 714;
@@ -28,7 +31,7 @@ const FIT = `max(0.85, min(1, tan(atan2(100svh - ${CHROME}, ${STAIR_H}px)), tan(
 
 export function Trilhas({ content }: { content: TrilhasContent }) {
   return (
-    <SceneTrack id="trilhas" labelledBy="trilhas-title" heights={TRILHAS_TRACK} className="bg-[#161515]">
+    <SceneTrack id="trilhas" labelledBy="trilhas-title" heights={TRILHAS_TRACK} revealProgress={TRILHAS_REVEAL} className="bg-[#161515]">
       {(progress, reduced) => <TrilhasStage content={content} progress={progress} reduced={reduced} />}
     </SceneTrack>
   );
@@ -87,12 +90,12 @@ function StepItem({ step, index, progress, reduced, className, style }: {
   step: Step; index: number; progress: MotionValue<number>; reduced: boolean; className?: string; style?: React.CSSProperties;
 }) {
   const t = STEP_THRESHOLDS[index];
-  const opacity = useTransform(progress, ...holdRange([t, t + 0.08], [0.15, 1]));
-  const y = useTransform(progress, ...holdRange([t, t + 0.08], [24, 0]));
+  const opacity = useTransform(progress, ...holdRange([t, t + STEP_REVEAL], [0.15, 1]));
+  const y = useTransform(progress, ...holdRange([t, t + STEP_REVEAL], [24, 0]));
   return (
-    <li className={className} style={style}>
+    <li className={className} style={style} data-focus-progress={t + STEP_REVEAL}>
       <span className="block font-display text-sm text-cream/60">{step.numeral}</span>
-      <motion.div className="mt-1 stairs:ml-6" style={reduced ? undefined : { opacity, y }}>
+      <motion.div className="mt-1 stairs:ml-6 motion-reduce:opacity-100! motion-reduce:transform-none!" style={reduced ? undefined : { opacity, y }}>
         <StepCard step={step} />
       </motion.div>
     </li>

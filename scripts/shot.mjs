@@ -7,7 +7,7 @@ mkdirSync("shots", { recursive: true });
 const h = height ? Number(height) : w < 768 ? 812 : 900;
 const out = height ? `shots/${id}-${progress}-${w}x${h}.png` : `shots/${id}-${progress}-${w}.png`;
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: w, height: h } });
+const page = await browser.newPage({ viewport: { width: w, height: h }, reducedMotion: process.env.REDUCED ? "reduce" : "no-preference" });
 const base = process.env.BASE_URL ?? "http://localhost:3111";
 await page.goto(base);
 await page.waitForLoadState("networkidle");

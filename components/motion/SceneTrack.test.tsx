@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { setMatchMedia } from "@/vitest.setup";
 import { SceneTrack } from "./SceneTrack";
 
@@ -34,5 +34,53 @@ describe("SceneTrack", () => {
     expect(section.firstElementChild).not.toHaveClass("sticky");
     expect(screen.getByRole("heading", { name: "reduzido" })).toBeInTheDocument();
     setMatchMedia(() => false);
+  });
+
+  describe("focus into the stage", () => {
+    function setup() {
+      setMatchMedia(() => false);
+      window.innerHeight = 800;
+      window.scrollY = 0;
+      vi.mocked(window.scrollTo).mockClear();
+      render(
+        <SceneTrack id="foco" labelledBy="f" heights={heights} revealProgress={0.3}>
+          {() => (
+            <>
+              <h2 id="f">f</h2>
+              <button type="button">cta</button>
+              <a href="#x" data-focus-progress="0.7">passo</a>
+            </>
+          )}
+        </SceneTrack>,
+      );
+      const el = document.getElementById("foco")!;
+      Object.defineProperty(el, "offsetHeight", { value: 2800 });
+      el.getBoundingClientRect = () => ({ top: 1000 - window.scrollY }) as DOMRect;
+      return el;
+    }
+
+    it("jumps to revealProgress when focus arrives before the scene is revealed", () => {
+      setup();
+      screen.getByRole("button", { name: "cta" }).focus();
+      expect(window.scrollTo).toHaveBeenCalledWith({ top: 1600, behavior: "instant" });
+    });
+
+    it("stays put once the scene is already revealed", () => {
+      setup();
+      window.scrollY = 1800; // progress 0.4
+      screen.getByRole("button", { name: "cta" }).focus();
+      expect(window.scrollTo).not.toHaveBeenCalled();
+    });
+
+    it("honours an element's own data-focus-progress", () => {
+      setup();
+      window.scrollY = 1800;
+      screen.getByRole("link", { name: "passo" }).focus();
+      expect(window.scrollTo).toHaveBeenCalledWith({ top: 2400, behavior: "instant" });
+    });
+
+    it("exposes revealProgress for anchor navigation", () => {
+      expect(setup()).toHaveAttribute("data-reveal-progress", "0.3");
+    });
   });
 });

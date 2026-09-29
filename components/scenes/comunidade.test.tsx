@@ -8,7 +8,9 @@ describe("Comunidade", () => {
     render(<Comunidade content={site.comunidade} />);
     expect(screen.getByRole("heading", { name: "Acompanhe antes de entrar" })).toBeInTheDocument();
     const yt = screen.getByRole("link", { name: /YouTube/ });
-    expect(yt).toHaveAttribute("target", "_blank");
+    // placeholder "#" hrefs must not open a blank tab
+    expect(yt).toHaveAttribute("href", "#");
+    expect(yt).not.toHaveAttribute("target");
     expect(document.querySelectorAll("[data-marquee-copy][aria-hidden='true']")).toHaveLength(3);
   });
 });

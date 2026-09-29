@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Step } from "@/content/types";
 
-/** Compact (icon beside text) below xl; stacked 233px card in the stairs layout (desktop staircase). */
+/** Compact (icon beside text) below the `stairs` variant; stacked 233px card in the stairs layout (desktop staircase). */
 export function StepCard({ step }: { step: Step }) {
   return (
     <a

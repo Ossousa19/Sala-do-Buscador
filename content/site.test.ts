@@ -28,6 +28,13 @@ describe("site content", () => {
     }
   });
 
+  it("menu follows the page order", () => {
+    const order = site.nav.links.map((l) => SECTION_IDS.indexOf(l.href.replace("#", "")));
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    const footerMenu = site.footer.columns.find((c) => c.title === "Menu")!.links.map((l) => l.href);
+    expect(footerMenu).toEqual(site.nav.links.map((l) => l.href).filter((h) => footerMenu.includes(h)));
+  });
+
   it("3 distinct articles", () => {
     const titles = new Set(site.artigos.articles.map((a) => a.title));
     expect(titles.size).toBe(3);

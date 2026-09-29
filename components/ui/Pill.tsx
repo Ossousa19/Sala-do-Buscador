@@ -15,7 +15,7 @@ export function Pill({ href, children, variant = "solid", external, className }:
   return (
     <a
       href={href}
-      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      {...(external && href !== "#" ? { target: "_blank", rel: "noreferrer" } : {})}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold pointer-coarse:min-h-11",
         "transition-[background-color,transform] duration-150 ease-cinema active:scale-[0.97]",

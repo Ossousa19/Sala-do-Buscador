@@ -70,7 +70,7 @@ function FooterBody({ content, progress, reduced, className }: { content: Footer
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                      {...(link.external && link.href !== "#" ? { target: "_blank", rel: "noreferrer" } : {})}
                       className="inline-block text-base leading-[23.4px] text-white pointer-coarse:py-[11px] transition-colors duration-200 hover:text-white/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}

@@ -7,9 +7,9 @@ const instagram: Link = { label: "Instagram", href: "#", external: true };
 
 const navLinks: Link[] = [
   { label: "Início", href: "#inicio" },
+  { label: "Salas", href: "#salas" },
   { label: "A Sala", href: "#curadoria" },
   { label: "A Busca", href: "#perguntas" },
-  { label: "Salas", href: "#salas" },
   { label: "Trilhas", href: "#trilhas" },
   { label: "Comunidade", href: "#comunidade" },
 ];
@@ -19,7 +19,7 @@ export const site: SiteContent = {
     title: "A Sala dos Buscadores",
     description:
       "Um portal que organiza tradições religiosas, espirituais e filosóficas em Salas comparáveis. Sem hierarquizar crenças, sem apagar diferenças, sempre com a fonte à vista.",
-    ogImage: "/images/hero/door-still.webp",
+    ogImage: "/images/og.jpg",
   },
   nav: { links: navLinks, cta: acervo, labels: { menu: "Menu", close: "Fechar", primary: "Principal", logo: "A Sala dos Buscadores, início" } },
   hero: {
@@ -45,6 +45,7 @@ export const site: SiteContent = {
     titleLit: "não pregação",
     subtitle: "A Sala dos Buscadores organiza o conhecimento religioso, espiritual e filosófico da humanidade em Salas.",
     cta: acervo,
+    labels: { prev: "Princípio anterior", next: "Próximo princípio" },
     principles: [
       {
         number: "01",
@@ -68,6 +69,7 @@ export const site: SiteContent = {
     text: "Espiritualidade, consciência, filosofia, textos antigos, símbolos e tradições.",
     textStrong: "Organizados por tema, não por hierarquia.",
     themes: ["Morte", "Alma", "Meditação", "Origem do universo", "Conhecimento interior", "Reencarnação", "Sofrimento", "Ética", "Oração", "Consciência"],
+    themesLabel: "Temas",
     cta: acervo,
     image: "/images/perguntas/scene.webp",
   },

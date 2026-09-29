@@ -43,7 +43,7 @@ function PerguntasStage({ content, progress, reduced }: { content: PerguntasCont
             {content.text}
             <strong className="block font-bold text-white">{content.textStrong}</strong>
           </p>
-          <ul aria-label="Temas" className="flex max-w-[640px] flex-wrap gap-3">
+          <ul aria-label={content.themesLabel} className="flex max-w-[640px] flex-wrap gap-3">
             {content.themes.map((theme, i) => (
               <ScatterTag key={theme} label={theme} index={i} progress={progress} reduced={reduced} />
             ))}
@@ -70,7 +70,7 @@ function ScatterTag({ label, index, progress, reduced }: { label: string; index:
   const opacity = useTransform(progress, inR, oO);
   const filter = useTransform(progress, inR, fO);
   return (
-    <motion.li style={reduced ? undefined : { x, y, rotate, opacity, filter }}>
+    <motion.li className="motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:filter-none!" style={reduced ? undefined : { x, y, rotate, opacity, filter }}>
       <Tag>{label}</Tag>
     </motion.li>
   );

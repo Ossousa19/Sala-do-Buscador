@@ -7,11 +7,12 @@ const sizes = {
   grid: "w-full",
 };
 
-export function SalaCard({ sala, size, onFocus }: { sala: Sala; size: keyof typeof sizes; onFocus?: () => void }) {
+/** `focusProgress`: the tunnel progress where this card is in front (SceneTrack scrolls there on focus). */
+export function SalaCard({ sala, size, focusProgress }: { sala: Sala; size: keyof typeof sizes; focusProgress?: number }) {
   return (
     <a
       href={sala.href}
-      onFocus={onFocus}
+      data-focus-progress={focusProgress}
       className={cn(
         "group relative block aspect-video overflow-hidden rounded-sm shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)]",
         "outline-offset-4 focus-visible:outline-2 focus-visible:outline-cream",

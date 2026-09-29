@@ -3,8 +3,11 @@ export type HeroContent = { title: [string, string]; tagline: [string, string]; 
 export type Sala = { id: string; name: string; image?: string; href: string };
 export type SalasContent = { title: string; subtitle: string; salas: Sala[] };
 export type Principle = { number: string; title: string; text: string };
-export type CuradoriaContent = { titleDim: string; titleLit: string; subtitle: string; cta: Link; principles: Principle[] };
-export type PerguntasContent = { title: string; text: string; textStrong: string; themes: string[]; cta: Link; image: string };
+export type CuradoriaContent = {
+  titleDim: string; titleLit: string; subtitle: string; cta: Link; principles: Principle[];
+  labels: { prev: string; next: string };
+};
+export type PerguntasContent = { title: string; text: string; textStrong: string; themes: string[]; themesLabel: string; cta: Link; image: string };
 export type Step = { numeral: string; title: string; meta: string; icon: string; href: string };
 export type TrilhasContent = { titleDim: string; titleLit: string; steps: Step[] };
 export type Article = { id: string; kicker: string; title: string; author: string; image?: string; href: string };

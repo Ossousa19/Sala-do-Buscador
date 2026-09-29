@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useMemo } from "react";
-import { motion, useTransform, type MotionValue } from "motion/react";
+import { useMemo, useState } from "react";
+import { motion, useMotionValueEvent, useTransform, type MotionValue } from "motion/react";
 import type { HeroContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
 import { FrameSequence } from "@/components/motion/FrameSequence";
@@ -34,7 +34,9 @@ function HeroStage({ content, progress, reduced }: { content: HeroContent; progr
   const copyOpacity = useTransform(progress, [0, 0.08, 0.4, 1], [1, 1, 0, 0]);
   const copyBlur = useTransform(progress, [0, 0.08, 0.4, 1], ["blur(0px)", "blur(0px)", "blur(14px)", "blur(14px)"]);
   const ctaOpacity = useTransform(progress, [0, 0.1, 1], [1, 0, 0]);
-  const ctaEvents = useTransform(ctaOpacity, (o) => (o < 0.05 ? "none" : "auto"));
+  // Once faded, the CTA leaves the tab order and the pointer layer (inert), and returns when visible.
+  const [ctaHidden, setCtaHidden] = useState(false);
+  useMotionValueEvent(ctaOpacity, "change", (o) => setCtaHidden(o < 0.05));
   const shade = useTransform(progress, [0, 0.2, 0.6, 1], [1, 1, 0, 0]);
   const on = <T,>(v: T) => (reduced ? undefined : v);
 
@@ -59,7 +61,7 @@ function HeroStage({ content, progress, reduced }: { content: HeroContent; progr
           <motion.p style={{ x: on(leftX), opacity: on(copyOpacity) }} className="max-w-[282px] text-base font-light leading-[1.1] text-bone/60">
             {content.description}
           </motion.p>
-          <motion.div style={{ opacity: on(ctaOpacity), pointerEvents: on(ctaEvents) }} className="md:absolute md:bottom-12 md:left-1/2 md:-translate-x-1/2">
+          <motion.div inert={!reduced && ctaHidden} style={{ opacity: on(ctaOpacity) }} className="md:absolute md:bottom-12 md:left-1/2 md:-translate-x-1/2">
             <Pill href={content.cta.href} variant="glass">{content.cta.label}</Pill>
           </motion.div>
           <motion.p

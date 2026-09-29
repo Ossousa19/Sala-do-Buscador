@@ -27,7 +27,7 @@ function Word({ word, progress, from, to, reduced }: { word: string; progress: M
   const y = useTransform(progress, ...holdRange([from, to], ["0.35em", "0em"]));
   const filter = useTransform(progress, ...holdRange([from, to], ["blur(8px)", "blur(0px)"]));
   return (
-    <motion.span className="mr-[0.25em] inline-block last:mr-0" style={reduced ? undefined : { opacity, y, filter }}>
+    <motion.span className="mr-[0.25em] inline-block last:mr-0 motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:filter-none!" style={reduced ? undefined : { opacity, y, filter }}>
       {word}
     </motion.span>
   );

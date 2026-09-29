@@ -8,11 +8,12 @@ import { DepthTunnel, type TunnelEntry } from "@/components/motion/DepthTunnel";
 import { SalaCard } from "@/components/ui/SalaCard";
 import { heroFrameUrls } from "@/lib/heroFrames";
 import { holdRange, progressForItem, tunnelLayout } from "@/lib/motion/math";
-import { scrollToSceneProgress } from "@/lib/scrollToSceneProgress";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useNearViewport } from "@/lib/useNearViewport";
 
 export const SALAS_TRACK = { desktop: 400, mobile: 260 };
+// Title fully visible (after the Hero handoff has mostly dissolved): anchors land here.
+export const SALAS_REVEAL = 0.08;
 
 // Positions (vw, vh) relative to the center, following the Figma composition (196:47)
 const DESKTOP_POS = [
@@ -25,7 +26,7 @@ const DESKTOP_POS = [
 
 export function Salas({ content }: { content: SalasContent }) {
   return (
-    <SceneTrack id="salas" labelledBy="salas-title" heights={SALAS_TRACK} className="bg-night">
+    <SceneTrack id="salas" labelledBy="salas-title" heights={SALAS_TRACK} revealProgress={SALAS_REVEAL} className="bg-night">
       {(progress, reduced) => (reduced ? <SalasGrid content={content} /> : <SalasTunnel content={content} progress={progress} />)}
     </SceneTrack>
   );
@@ -43,8 +44,8 @@ function SalasTitle({ content }: { content: SalasContent }) {
 function SalasTunnel({ content, progress }: { content: SalasContent; progress: MotionValue<number> }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const layout = useMemo(
-    // start >= the visibility horizon (4200) so no card shows before the title has faded
-    () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 4200, exit: 900 } : { start: 3800 }),
+    // start >= the visibility horizon (tunnelVisual far = 4200) on both layouts, so no card shows before the title has faded
+    () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 4200, exit: 900 } : { start: 4200 }),
     [content.salas.length, isMobile],
   );
   const bgScale = useTransform(progress, [0, 1], [1, 1.25]);
@@ -63,7 +64,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
     return {
       key: sala.id,
       ...pos,
-      node: <SalaCard sala={sala} size="tunnel" onFocus={() => scrollToSceneProgress("salas", progressForItem(i, layout), "instant")} />,
+      node: <SalaCard sala={sala} size="tunnel" focusProgress={progressForItem(i, layout)} />,
     };
   });
 

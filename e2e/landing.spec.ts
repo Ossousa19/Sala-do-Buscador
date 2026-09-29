@@ -1,4 +1,20 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator } from "@playwright/test";
+
+/** Effective visibility of an element: opacity of it and every ancestor, clip-path, and viewport overlap. */
+async function visibility(locator: Locator) {
+  return locator.evaluate((el) => {
+    let opacity = 1;
+    let clipped = false;
+    for (let n: Element | null = el; n; n = n.parentElement) {
+      const cs = getComputedStyle(n);
+      opacity *= Number(cs.opacity);
+      if (cs.clipPath.startsWith("inset(50%")) clipped = true;
+    }
+    const r = el.getBoundingClientRect();
+    const inViewport = r.bottom > 0 && r.right > 0 && r.top < innerHeight && r.left < innerWidth;
+    return { opacity, clipped, inViewport };
+  });
+}
 
 const IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq"];
 
@@ -13,7 +29,6 @@ test("the whole page renders with no console errors", async ({ page }) => {
     await expect(page.locator(`#${id}`)).toBeAttached();
   }
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await page.waitForTimeout(800);
   await expect(page.getByRole("contentinfo")).toContainText("A Sala dos Buscadores");
   expect(errors).toEqual([]);
 });
@@ -35,4 +50,35 @@ test("reduced motion: scenes are not pinned", async ({ page }, info) => {
     await expect(page.locator(`#${id}`)).toHaveAttribute("data-reduced", "true");
   }
   await expect(page.getByTestId("frame-sequence")).toHaveCount(0);
+});
+
+test("keyboard: tabbing from the Salas cards into Curadoria lands on a visible control", async ({ page }, info) => {
+  test.skip(info.project.name !== "desktop");
+  await page.goto("/");
+  const cards = page.locator("#salas a");
+  await expect(cards).toHaveCount(5);
+  await cards.last().focus();
+  await page.keyboard.press("Tab");
+  const focused = page.locator("#curadoria :focus");
+  await expect(focused).toHaveCount(1);
+  await expect.poll(() => visibility(focused)).toEqual({ opacity: expect.any(Number), clipped: false, inViewport: true });
+  await expect.poll(async () => (await visibility(focused)).opacity).toBeGreaterThan(0.5);
+});
+
+test("nav anchors land pinned scenes on their revealed frame", async ({ page }, info) => {
+  test.skip(info.project.name !== "desktop");
+  await page.goto("/");
+  await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "A Sala", exact: true }).click();
+  await expect(page).toHaveURL(/#curadoria$/);
+  const cta = page.locator("#curadoria").getByRole("link", { name: "Entrar no acervo" });
+  await expect.poll(() => visibility(cta), { timeout: 10_000 }).toEqual({ opacity: 1, clipped: false, inViewport: true });
+});
+
+test("the Hero CTA leaves the tab order once it has faded", async ({ page }, info) => {
+  test.skip(info.project.name !== "desktop");
+  await page.goto("/");
+  const cta = page.locator("#inicio").getByRole("link", { name: "Entrar no acervo" });
+  await expect(cta.locator("xpath=ancestor::*[@inert]")).toHaveCount(0);
+  await page.evaluate(() => window.scrollTo(0, innerHeight * 1.5));
+  await expect(cta.locator("xpath=ancestor::*[@inert]")).toHaveCount(1);
 });

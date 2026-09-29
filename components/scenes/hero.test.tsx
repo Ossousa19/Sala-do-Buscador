@@ -39,4 +39,10 @@ describe("HeroDoor", () => {
     expect(document.getElementById("inicio")).toHaveAttribute("aria-labelledby", "hero-title");
     expect(screen.getByTestId("frame-sequence")).toBeInTheDocument();
   });
+
+  it("the CTA stays in the tab order while visible", () => {
+    render(<HeroDoor content={site.hero} />);
+    const cta = screen.getByRole("link", { name: site.hero.cta.label });
+    expect(cta.closest("[inert]")).toBeNull();
+  });
 });

@@ -34,7 +34,7 @@ export function Nav({ nav }: { nav: NavContent }) {
         )}
       />
       <nav aria-label={nav.labels.primary} className="container-page relative flex items-center justify-between">
-        <a href="#inicio" aria-label={nav.labels.logo} className="origin-left rounded-sm pointer-coarse:py-[7px] transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
+        <a href="#inicio" aria-label={nav.labels.logo} className="origin-left rounded-sm pointer-coarse:py-[7px] motion-safe:transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
           style={{ transform: compact ? "scale(0.776)" : "scale(1)" }}
         >
           <Image

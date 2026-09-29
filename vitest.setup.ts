@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom/vitest";
 import { MotionGlobalConfig } from "motion/react";
-import { vi } from "vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach, vi } from "vitest";
+
+afterEach(() => cleanup());
 
 MotionGlobalConfig.skipAnimations = true;
 

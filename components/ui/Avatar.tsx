@@ -24,7 +24,7 @@ export function Avatar({ name, src, className }: { name: string; src?: string; c
     );
   }
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- tiny local SVGs; <img> keeps onError fallback simple
+    // eslint-disable-next-line @next/next/no-img-element -- tiny 76px photos; <img> keeps onError fallback simple
     <img src={src} alt="" aria-hidden="true" width={38} height={38} loading="lazy" decoding="async" onError={() => setFailed(true)} className={cn(base, "object-cover")} />
   );
 }

@@ -35,11 +35,13 @@ describe("site content", () => {
     expect(footerMenu).toEqual(site.nav.links.map((l) => l.href).filter((h) => footerMenu.includes(h)));
   });
 
-  it("every member has a unique name and a local avatar", () => {
+  it("every member has a unique name; the 22 Figma photos are used once each", () => {
     const names = site.comunidade.members.map((m) => m.name);
     expect(new Set(names).size).toBe(names.length);
-    for (const m of site.comunidade.members) expect(m.avatar).toMatch(/^\/images\/comunidade\/avatars\/avatar-\d{2}\.svg$/);
-    expect(new Set(site.comunidade.members.map((m) => m.avatar)).size).toBe(names.length);
+    const avatars = site.comunidade.members.flatMap((m) => (m.avatar ? [m.avatar] : []));
+    for (const a of avatars) expect(a).toMatch(/^\/images\/comunidade\/avatars\/user-\d{2}\.webp$/);
+    expect(avatars).toHaveLength(22);
+    expect(new Set(avatars).size).toBe(22);
   });
 
   it("3 distinct articles", () => {

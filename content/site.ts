@@ -1,7 +1,7 @@
 import type { Link, SiteContent } from "./types";
 
 const ACERVO = "#";
-const avatar = (n: number) => `/images/comunidade/avatars/avatar-${String(n).padStart(2, "0")}.svg`;
+const avatar = (n: number) => `/images/comunidade/avatars/user-${String(n).padStart(2, "0")}.webp`;
 const acervo: Link = { label: "Entrar no acervo", href: ACERVO };
 const youtube: Link = { label: "YouTube", href: "#", external: true };
 const instagram: Link = { label: "Instagram", href: "#", external: true };
@@ -123,32 +123,32 @@ export const site: SiteContent = {
       { label: "Assistir no YouTube ↗", href: youtube.href, external: true },
       { label: "Seguir no Instagram ↗", href: instagram.href, external: true },
     ],
-    // TODO: substituir pelos avatares reais (placeholders abstratos de scripts/make-avatars.mjs)
+    // Fotos do Figma (196:246–196:320), na mesma ordem; as 2 vagas sem foto no Figma mostram as iniciais.
     members: [
       { name: "Ana L.", avatar: avatar(1) },
       { name: "Rafael M.", avatar: avatar(2) },
       { name: "Júlia S.", avatar: avatar(3) },
       { name: "Tomás R.", avatar: avatar(4) },
       { name: "Helena C.", avatar: avatar(5) },
-      { name: "Caio B.", avatar: avatar(6) },
-      { name: "Marina F.", avatar: avatar(7) },
-      { name: "Davi P.", avatar: avatar(8) },
-      { name: "Lívia A.", avatar: avatar(9) },
-      { name: "Otávio N.", avatar: avatar(10) },
-      { name: "Beatriz G.", avatar: avatar(11) },
-      { name: "Samuel T.", avatar: avatar(12) },
-      { name: "Clara V.", avatar: avatar(13) },
-      { name: "Igor D.", avatar: avatar(14) },
-      { name: "Yasmin K.", avatar: avatar(15) },
-      { name: "Bruno E.", avatar: avatar(16) },
-      { name: "Sofia H.", avatar: avatar(17) },
-      { name: "Pedro Q.", avatar: avatar(18) },
-      { name: "Alice W.", avatar: avatar(19) },
-      { name: "Mateus J.", avatar: avatar(20) },
-      { name: "Laura O.", avatar: avatar(21) },
-      { name: "Gabriel Z.", avatar: avatar(22) },
-      { name: "Isis U.", avatar: avatar(23) },
-      { name: "Nina Y.", avatar: avatar(24) },
+      { name: "Caio B." },
+      { name: "Marina F.", avatar: avatar(6) },
+      { name: "Davi P.", avatar: avatar(7) },
+      { name: "Lívia A." },
+      { name: "Otávio N.", avatar: avatar(8) },
+      { name: "Beatriz G.", avatar: avatar(9) },
+      { name: "Samuel T.", avatar: avatar(10) },
+      { name: "Clara V.", avatar: avatar(11) },
+      { name: "Igor D.", avatar: avatar(12) },
+      { name: "Yasmin K.", avatar: avatar(13) },
+      { name: "Bruno E.", avatar: avatar(14) },
+      { name: "Sofia H.", avatar: avatar(15) },
+      { name: "Pedro Q.", avatar: avatar(16) },
+      { name: "Alice W.", avatar: avatar(17) },
+      { name: "Mateus J.", avatar: avatar(18) },
+      { name: "Laura O.", avatar: avatar(19) },
+      { name: "Gabriel Z.", avatar: avatar(20) },
+      { name: "Isis U.", avatar: avatar(21) },
+      { name: "Nina Y.", avatar: avatar(22) },
     ],
   },
   faq: {

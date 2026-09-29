@@ -19,8 +19,7 @@ const files = [
   "public/assets/hero/cosmos.webm",
   "public/assets/hero/cosmos.mp4",
   ...["tome", "poimandres", "nag-hammadi"].map((n) => `public/images/artigos/${n}.webp`),
-  // TEMPORARY member avatars (scripts/make-avatars.mjs)
-  ...Array.from({ length: 24 }, (_, i) => `public/images/comunidade/avatars/avatar-${String(i + 1).padStart(2, "0")}.svg`),
+  ...Array.from({ length: 22 }, (_, i) => `public/images/comunidade/avatars/user-${String(i + 1).padStart(2, "0")}.webp`),
 ];
 const missing = files.filter((f) => !existsSync(f) || statSync(f).size === 0);
 if (missing.length) {

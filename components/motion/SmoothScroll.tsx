@@ -1,5 +1,6 @@
 "use client";
 import Lenis from "lenis";
+import { MotionConfig } from "motion/react";
 import { useEffect, type ReactNode } from "react";
 import { usePrefersReducedMotion } from "@/lib/useMediaQuery";
 
@@ -17,5 +18,5 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       lenis.destroy();
     };
   }, [reduced]);
-  return <>{children}</>;
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

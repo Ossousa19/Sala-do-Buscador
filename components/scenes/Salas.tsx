@@ -43,7 +43,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
   const isMobile = useMediaQuery("(max-width: 767px)");
   const layout = useMemo(
     // start >= the visibility horizon (4200) so no card shows before the title has faded
-    () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 3000, exit: 900 } : { start: 3800 }),
+    () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 4200, exit: 900 } : { start: 3800 }),
     [content.salas.length, isMobile],
   );
   const bgScale = useTransform(progress, [0, 1], [1, 1.25]);

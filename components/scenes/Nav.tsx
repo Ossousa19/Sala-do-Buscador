@@ -33,8 +33,8 @@ export function Nav({ nav }: { nav: NavContent }) {
           compact ? "opacity-100" : "opacity-0",
         )}
       />
-      <nav aria-label="Principal" className="container-page relative flex items-center justify-between">
-        <a href="#inicio" aria-label="A Sala dos Buscadores, início" className="origin-left rounded-sm transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
+      <nav aria-label={nav.labels.primary} className="container-page relative flex items-center justify-between">
+        <a href="#inicio" aria-label={nav.labels.logo} className="origin-left rounded-sm transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
           style={{ transform: compact ? "scale(0.776)" : "scale(1)" }}
         >
           <Image
@@ -68,7 +68,7 @@ export function Nav({ nav }: { nav: NavContent }) {
             onClick={() => setOpen((o) => !o)}
             className="rounded-full border border-cream/30 px-4 py-2 text-sm text-cream transition-transform duration-150 active:scale-[0.97]"
           >
-            {open ? "Fechar" : "Menu"}
+            {open ? nav.labels.close : nav.labels.menu}
           </button>
         </div>
       </nav>

@@ -13,8 +13,8 @@ export type ComunidadeContent = { badge: string; title: string; text: string; li
 export type FaqItem = { question: string; answer: string };
 export type FaqContent = { title: string; text: string; items: FaqItem[] };
 export type FooterColumn = { title: string; links: Link[] };
-export type FooterContent = { description: string; columns: FooterColumn[]; copyright: string; credit: string; wordmark: [string, string] };
-export type NavContent = { links: Link[]; cta: Link };
+export type FooterContent = { logoAlt: string; description: string; columns: FooterColumn[]; copyright: string; credit: string; wordmark: [string, string] };
+export type NavContent = { links: Link[]; cta: Link; labels: { menu: string; close: string; primary: string; logo: string } };
 export type SiteContent = {
   meta: { title: string; description: string; ogImage: string };
   nav: NavContent; hero: HeroContent; salas: SalasContent; curadoria: CuradoriaContent;

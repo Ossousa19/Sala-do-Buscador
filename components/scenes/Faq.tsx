@@ -10,13 +10,13 @@ export function Faq({ content }: { content: FaqContent }) {
     <section
       id="faq"
       aria-labelledby="faq-title"
-      className="relative bg-[#161515] bg-[url('/images/textures/stone-row.webp')] bg-[length:1513px_253px] bg-repeat py-16 md:py-[64px]"
+      className="relative bg-[#161515] bg-[url('/images/textures/stone-row.webp')] bg-[length:1513px_253px] bg-repeat py-16"
     >
       <div className="container-page">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <h2 id="faq-title" aria-label={content.title} className="font-display text-[clamp(36px,3.6vw,52px)] leading-[0.92] text-cream">
-            <span aria-hidden="true" className="block font-medium">{first}</span>
-            {second && <span aria-hidden="true" className="block font-normal text-cream/80">{second}</span>}
+          <h2 id="faq-title" className="font-display text-[clamp(36px,3.6vw,52px)] leading-[0.92] text-cream">
+            <span className="block font-medium">{first}</span>
+            {second && <span className="block font-normal text-cream/80">{second}</span>}
           </h2>
           <p className="max-w-[421px] text-base font-light leading-tight text-[#a4a4a4] md:mt-[30px]">{content.text}</p>
         </div>

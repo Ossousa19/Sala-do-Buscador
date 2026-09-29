@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import type { FooterContent } from "@/content/types";
 import { cn } from "@/lib/cn";
@@ -29,6 +29,11 @@ function CurtainFooter({ content }: { content: FooterContent }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: OFFSET });
   const [hidden, setHidden] = useState(true);
   useMotionValueEvent(scrollYProgress, "change", (v) => setHidden(v <= 0.02));
+  // The page may load already scrolled to the bottom: read the current progress on mount too.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setHidden(scrollYProgress.get() <= 0.02));
+    return () => cancelAnimationFrame(id);
+  }, [scrollYProgress]);
   return (
     <div ref={ref} className={cn("relative", HEIGHT)} style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}>
       <div className={cn("fixed bottom-0 left-0 w-full", HEIGHT)} inert={hidden}>
@@ -53,7 +58,7 @@ function FooterBody({ content, progress, reduced, className }: { content: Footer
     <footer className={cn("flex flex-col justify-between bg-[#111313] py-16", className)}>
       <div className="container-page flex flex-col gap-12 md:flex-row md:justify-between">
         <div className="max-w-[291px]">
-          <Image src="/images/brand/logo.svg" alt="A Sala dos Buscadores" width={191} height={58} className="h-auto w-[191px]" />
+          <Image src="/images/brand/logo.svg" alt={content.logoAlt} width={191} height={58} className="h-auto w-[191px]" />
           <p className="mt-8 font-sans text-lg leading-[23.4px] text-white/80">{content.description}</p>
         </div>
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:flex md:gap-[84px]">

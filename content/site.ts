@@ -21,7 +21,7 @@ export const site: SiteContent = {
       "Um portal que organiza tradições religiosas, espirituais e filosóficas em Salas comparáveis. Sem hierarquizar crenças, sem apagar diferenças, sempre com a fonte à vista.",
     ogImage: "/images/hero/door-still.webp",
   },
-  nav: { links: navLinks, cta: acervo },
+  nav: { links: navLinks, cta: acervo, labels: { menu: "Menu", close: "Fechar", primary: "Principal", logo: "A Sala dos Buscadores, início" } },
   hero: {
     title: ["A porta", "está aberta"],
     tagline: ["A escada é de", "quem sobe"],
@@ -146,6 +146,7 @@ export const site: SiteContent = {
     ],
   },
   footer: {
+    logoAlt: "A Sala dos Buscadores",
     description: "Um acervo para quem busca: tradições, textos e símbolos organizados com rigor e sem hierarquia.",
     columns: [
       { title: "Menu", links: navLinks.filter((l) => l.href !== "#perguntas") },

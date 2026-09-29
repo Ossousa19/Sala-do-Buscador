@@ -26,6 +26,20 @@ describe("Accordion", () => {
     await waitFor(() => expect(screen.queryByText("Resposta A")).not.toBeInTheDocument());
   });
 
+  it("clicking the open item closes it", async () => {
+    render(<Accordion items={items} />);
+    await userEvent.click(screen.getByRole("button", { name: "Pergunta A" }));
+    expect(screen.getByRole("button", { name: "Pergunta A" })).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => expect(screen.queryByText("Resposta A")).not.toBeInTheDocument());
+  });
+
+  it("toggles with Space", async () => {
+    render(<Accordion items={items} defaultOpen={null} />);
+    screen.getByRole("button", { name: "Pergunta B" }).focus();
+    await userEvent.keyboard(" ");
+    expect(screen.getByRole("button", { name: "Pergunta B" })).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("works from the keyboard (Enter)", async () => {
     render(<Accordion items={items} defaultOpen={null} />);
     screen.getByRole("button", { name: "Pergunta B" }).focus();

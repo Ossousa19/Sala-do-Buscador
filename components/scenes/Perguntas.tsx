@@ -27,7 +27,7 @@ function PerguntasStage({ content, progress, reduced }: { content: PerguntasCont
     <div className="relative flex h-full min-h-svh w-full items-center overflow-hidden bg-night">
       <motion.div
         aria-hidden="true"
-        className="absolute inset-y-0 left-0 w-full md:left-[23.8%] md:w-[81.4%]"
+        className="absolute -inset-y-[8%] left-0 w-full md:left-[23.8%] md:w-[81.4%]"
         style={{ y: reduced ? 0 : imageY }}
       >
         <Image src={content.image} alt="" fill sizes="(max-width: 767px) 100vw, 81vw" className="object-cover" />

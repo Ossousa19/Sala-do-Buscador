@@ -14,7 +14,6 @@ const files = [
   "public/images/ornaments/finial-cream.svg",
   "public/images/icons/arrow-prev.svg",
   "public/images/icons/arrow-next.svg",
-  "public/images/icons/faq-toggle.svg",
   "public/images/perguntas/scene.webp",
   ...[1, 2, 3, 4].map((n) => `public/images/trilhas/step-${n}.webp`),
 ];

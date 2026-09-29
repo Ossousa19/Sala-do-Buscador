@@ -37,7 +37,7 @@ export function Accordion({ items, defaultOpen = 0 }: { items: FaqItem[]; defaul
                   height="48"
                   viewBox="0 0 48 48"
                   fill="none"
-                  className={cn("shrink-0 transition-transform duration-300 ease-cinema", isOpen && "rotate-180")}
+                  className="shrink-0"
                 >
                   <circle cx="24" cy="24" r="24" className={cn("transition-[fill] duration-300 ease-cinema", isOpen ? "fill-cream" : "fill-wine")} />
                   <path
@@ -62,7 +62,7 @@ export function Accordion({ items, defaultOpen = 0 }: { items: FaqItem[]; defaul
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="max-w-[945px] px-5 pb-4 pt-4 text-sm font-normal leading-[1.2] text-[#a4a4a4] md:px-[42px]">{item.answer}</p>
+                  <p className="max-w-[945px] px-5 pb-6 pt-2 text-sm font-normal leading-[1.2] text-[#a4a4a4] md:px-[42px]">{item.answer}</p>
                 </motion.div>
               )}
             </AnimatePresence>

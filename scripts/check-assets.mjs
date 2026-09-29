@@ -20,6 +20,8 @@ const files = [
   "public/assets/hero/cosmos.mp4",
   // TEMPORARY article covers (scripts/make-article-placeholders.py)
   ...[1, 2, 3].map((n) => `public/images/artigos/placeholder-${n}.webp`),
+  // TEMPORARY member avatars (scripts/make-avatars.mjs)
+  ...Array.from({ length: 24 }, (_, i) => `public/images/comunidade/avatars/avatar-${String(i + 1).padStart(2, "0")}.svg`),
 ];
 const manifest = JSON.parse(readFileSync("content/hero-frames.json", "utf8"));
 for (const variant of ["desktop", "mobile"]) {

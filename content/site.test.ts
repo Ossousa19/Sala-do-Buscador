@@ -35,6 +35,13 @@ describe("site content", () => {
     expect(footerMenu).toEqual(site.nav.links.map((l) => l.href).filter((h) => footerMenu.includes(h)));
   });
 
+  it("every member has a unique name and a local avatar", () => {
+    const names = site.comunidade.members.map((m) => m.name);
+    expect(new Set(names).size).toBe(names.length);
+    for (const m of site.comunidade.members) expect(m.avatar).toMatch(/^\/images\/comunidade\/avatars\/avatar-\d{2}\.svg$/);
+    expect(new Set(site.comunidade.members.map((m) => m.avatar)).size).toBe(names.length);
+  });
+
   it("3 distinct articles", () => {
     const titles = new Set(site.artigos.articles.map((a) => a.title));
     expect(titles.size).toBe(3);

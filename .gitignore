@@ -48,3 +48,4 @@ shots/
 # playwright
 /test-results/
 /playwright-report/
+public/images/hero/door-still.png

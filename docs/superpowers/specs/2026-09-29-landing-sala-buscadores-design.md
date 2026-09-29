@@ -44,6 +44,7 @@ components/
     SplitText.tsx       divide o texto em palavras/letras para revelar
     ParallaxLayer.tsx   deslocamento/escala por progresso
     Marquee.tsx         faixa infinita com velocidade ligada ao scroll
+    DepthTunnel.tsx     itens distribuídos em Z; câmera avança com o progresso
   scenes/
     HeroDoor.tsx  Sala.tsx  Curadoria.tsx  Perguntas.tsx  Trilhas.tsx
     Artigos.tsx   Comunidade.tsx  Faq.tsx  Footer.tsx
@@ -96,7 +97,7 @@ Os valores exatos são extraídos do Figma (`get_design_context`) na implementa�
 | # | Cena | Tipo | Desktop / Mobile | Roteiro |
 |---|---|---|---|---|
 | 1 | Hero: atravessar a porta | presa | 400vh / 240vh | `FrameSequence` avança a câmera pelo arco. "A porta está aberta" sai pela esquerda e "A escada é de quem sobe" pela direita, com desfoque. O Nav recolhe para uma barra compacta. O último frame é o céu estrelado, que é o fundo da cena 2. |
-| 2 | A Sala: salão no espaço | presa | 250vh / 150vh | Os cards das Salas vêm do fundo em profundidades diferentes. "A sala do primeiro ciclo" acende no centro. Preparado para 5 cards. No mobile, os cards ficam empilhados com revelação simples. |
+| 2 | A Sala: túnel 3D de Salas | presa | 400vh / 260vh | Scroll 3D: a câmera avança por um corredor no espaço e os cards das Salas vêm do fundo em direção à tela até passar pelo usuário. Detalhes na seção 5.1. |
 | 3 | Curadoria: o museu se acende | presa | 300vh / 180vh | O pergaminho abre a partir de uma linha central (clip-path). O título entra palavra por palavra. Os princípios 01 → 02 → 03 trocam conforme o progresso, com a numeração ativa à direita. As setas levam ao princípio correspondente (rolando até ele). |
 | 4 | Perguntas | presa curta | 150vh / 100vh | As pílulas começam espalhadas e desfocadas e se encaixam nas fileiras. A imagem lateral faz parallax lento. |
 | 5 | Trilhas: subir a escada | presa | 250vh / 160vh | A linha em degraus é desenhada (SVG `pathLength`). Cada degrau I–IV acende quando a linha chega nele (o ícone sobe e o título aparece). |
@@ -105,7 +106,29 @@ Os valores exatos são extraídos do Figma (`get_design_context`) na implementa�
 | 8 | FAQ | livre | — | Acordeão com animação de altura. O ícone "+" gira para "×". Acessível por teclado. |
 | 9 | Footer: cortina | fixo por baixo | — | A última seção sobe e revela o footer. "A SALA DOS BUSCADORES" sobe letra por letra. |
 
-**Reduced motion:** `SceneTrack` não prende (altura = conteúdo), o Lenis fica desligado, `FrameSequence` mostra um frame fixo (o arco) e as revelações viram fades curtos de opacidade.
+### 5.1 Cena 2: túnel 3D de Salas
+
+Referência: "3D scrolling effect" de Felix Brady / Ensemble (awwwards.com/inspiration/3d-scrolling-effect-felix-brady, felixbrady.tv). A referência só existe em vídeo. Esta seção descreve a interpretação adotada, que o usuário precisa confirmar.
+
+**Efeito:** o palco é um espaço 3D com CSS `perspective`, sem WebGL. Os cards das Salas ficam distribuídos ao longo do eixo Z, como num corredor. O scroll move a "câmera" para frente. Cada card começa pequeno, escuro e desfocado lá no fundo, cresce e ganha nitidez enquanto se aproxima, fica em foco perto do plano da tela e então passa pelo usuário (escala além da tela e some com fade).
+
+**Montagem**
+- O palco tem `perspective: ~1200px` e um grupo interno com `transform-style: preserve-3d`.
+- O componente `motion/DepthTunnel.tsx` recebe uma lista de itens e o progresso da cena. Cada item tem uma posição fixa: `x` e `y` alternando esquerda/direita e alto/baixo, como na composição do Figma, e `z` com espaçamento regular (~1400px entre cards).
+- A câmera é um único `translateZ` no grupo, que vai de 0 até a profundidade total conforme o progresso. Por item, só se calculam opacidade e desfoque em função da distância até a câmera: longe = opaco 0,2 e desfoque 6px; perto = opaco 1 e sem desfoque; já passou = opaco 0.
+- O fundo estrelado segue o scroll mais devagar que os cards (parallax), para dar sensação de viagem.
+- **Título:** "A sala do primeiro ciclo" e o subtítulo ficam fixos no centro, na frente de tudo, no início da cena. Somem quando o primeiro card chega perto e voltam a aparecer ao final, depois do último card.
+- **Cards:** 5 Salas (imagens do Figma: Propósito, Fé e do Poder, e as demais quando existirem). Cada card é um link/`article` com o nome da Sala em texto HTML real. Cards focáveis por teclado; ao receber foco, a página rola até a posição em que aquele card está em foco.
+
+**Desempenho:** só `transform`, `opacity` e `filter` são animados. O desfoque é limitado a 6px e desligado no mobile (troca por opacidade). Imagens com `next/image`, tamanho máximo 1200px.
+
+**Mobile:** mesmo efeito, com 5 cards centralizados (sem alternar lados), espaçamento Z menor e sem desfoque. Duração de 260vh.
+
+**Reduced motion:** sem 3D. O título vem seguido de uma grade simples com os 5 cards.
+
+### 5.2 Reduced motion (todas as cenas)
+
+`SceneTrack` não prende (altura = conteúdo), o Lenis fica desligado, `FrameSequence` mostra um frame fixo (o arco) e as revelações viram fades curtos de opacidade.
 
 ## 6. Hero: sequência de frames
 
@@ -142,7 +165,7 @@ Todos os textos ficam em `content/site.ts`. Os que ainda são placeholder no Fig
 
 ## 9. Testes e verificação
 
-- **Unitários (Vitest):** mapeamento progresso → índice de frame em `FrameSequence`, ordem de carregamento dos frames, seleção do frame mais próximo e o fallback de reduced motion em `SceneTrack`.
+- **Unitários (Vitest):** mapeamento progresso → índice de frame em `FrameSequence`, ordem de carregamento dos frames, seleção do frame mais próximo, cálculo de opacidade/desfoque por distância em `DepthTunnel` e o fallback de reduced motion em `SceneTrack`.
 - **Componentes (Testing Library):** o acordeão do FAQ (abre e fecha, teclado, `aria-expanded`) e o conteúdo de `site.ts` renderizado em cada cena.
 - **E2E (Playwright):** carrega a página, rola até o fim, confirma que cada cena aparece, que não há erros no console e que não há rolagem horizontal em 375px. Roda também com `reducedMotion: 'reduce'`.
 - **Visual:** screenshots em 1440, 768 e 375 comparados manualmente com o Figma a cada cena concluída.
@@ -152,7 +175,7 @@ Todos os textos ficam em `content/site.ts`. Os que ainda são placeholder no Fig
 ## 10. Entregáveis e ordem
 
 1. Projeto base: Next.js, Tailwind, tokens, fontes, Lenis e `content/site.ts`.
-2. Peças de motion (`SceneTrack`, `FrameSequence`, `SplitText`, `ParallaxLayer`, `Marquee`) com testes.
+2. Peças de motion (`SceneTrack`, `FrameSequence`, `DepthTunnel`, `SplitText`, `ParallaxLayer`, `Marquee`) com testes.
 3. Cenas na ordem da página, com frames provisórios no Hero.
 4. Vídeo via Magnific → frames reais do Hero.
 5. Revisão de desempenho, acessibilidade e responsividade.

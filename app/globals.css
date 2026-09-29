@@ -15,11 +15,128 @@
   --font-display: var(--font-gambetta), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+  /* strong ease-out for UI feedback (hover/press) */
+  --ease-ui: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @utility container-page {
   width: min(1184px, 100% - 2 * clamp(16px, 5vw, 128px));
   margin-inline: auto;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────────
+   `btn` = shared interaction model for every pressable (Pill, ArrowButton, Nav menu, FAQ rows):
+   hover lifts 2px + soft shadow (hover-capable pointers only), :active presses to 0.98,
+   :focus-visible draws a two-tone ring via box-shadow with a transparent outline, which
+   Windows forced-colors mode repaints as a real outline. Only transform/box-shadow/colors
+   transition. Reduced motion keeps the color/shadow feedback and drops translate/scale.
+   Variants only set colors and the optional --btn-shadow / --btn-ring-in / --btn-ring-out /
+   --btn-hover-y / --btn-press knobs (the base reads them with fallbacks, so utility order
+   never matters). */
+@utility btn {
+  --btn-lift: 0 0 #0000;
+  --btn-focus: 0 0 #0000;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--btn-focus), var(--btn-lift);
+  transition-property: transform, box-shadow, background-color, border-color, color;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease-ui);
+  &:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    --btn-focus: 0 0 0 2px var(--btn-ring-in, var(--color-night)), 0 0 0 4px var(--btn-ring-out, var(--color-cream));
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      --btn-lift: var(--btn-shadow, 0 10px 24px -12px rgb(0 0 0 / 0.55));
+      transform: translateY(var(--btn-hover-y, -2px));
+    }
+  }
+  &:active {
+    transform: scale(var(--btn-press, 0.98));
+    transition-duration: 120ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+/* Solid white (primary CTA) — on night, cream or parchment */
+@utility btn-primary {
+  --btn-shadow: 0 10px 24px -10px rgb(12 4 4 / 0.55), 0 2px 6px -2px rgb(12 4 4 / 0.25);
+  background-color: #fff;
+  color: var(--color-wine);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--color-cream);
+      color: var(--color-ink);
+    }
+  }
+}
+
+/* Glass / translucent outline on dark imagery (Hero CTA, Nav menu) */
+@utility btn-secondary {
+  --btn-shadow: 0 10px 28px -12px rgb(0 0 0 / 0.7);
+  border: 1px solid rgb(246 231 206 / 0.22);
+  background-color: rgb(0 0 0 / 0.22);
+  color: #fff;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: rgb(246 231 206 / 0.55);
+      background-color: rgb(0 0 0 / 0.42);
+      color: var(--color-cream);
+    }
+  }
+}
+
+/* Wine outline on light sections (Comunidade) — fills wine on hover */
+@utility btn-outline {
+  --btn-shadow: 0 10px 22px -12px rgb(59 10 10 / 0.6);
+  --btn-ring-in: var(--color-cream);
+  --btn-ring-out: var(--color-wine);
+  border: 1px solid var(--color-wine);
+  background-color: transparent;
+  color: var(--color-wine);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--color-wine);
+      color: var(--color-cream);
+    }
+  }
+}
+
+/* Round icon button drawn by its own SVG stroke, on parchment (Curadoria arrows) */
+@utility btn-icon {
+  --btn-shadow: 0 8px 18px -10px rgb(31 31 29 / 0.55);
+  --btn-ring-in: var(--color-cream);
+  --btn-ring-out: var(--color-ink);
+  border-radius: 9999px;
+  background-color: transparent;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: rgb(255 255 255 / 0.7);
+    }
+  }
+}
+
+/* Full-width disclosure row (FAQ). A 2px lift would detach the row from its bordered card and
+   a 0.98 press would shrink ~24px on a 1184px row, so the row keeps the shared ring/transition
+   model with a background tint on hover and a subtle press. */
+@utility btn-row {
+  --btn-hover-y: 0px;
+  --btn-press: 0.995;
+  --btn-shadow: 0 0 #0000;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: rgb(246 231 206 / 0.06);
+    }
+  }
 }
 
 html {

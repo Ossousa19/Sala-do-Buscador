@@ -3,9 +3,10 @@ import { mkdirSync } from "node:fs";
 
 const [, , id = "inicio", progress = "0", width = "1440", height] = process.argv;
 const w = Number(width);
-mkdirSync("shots", { recursive: true });
+const dir = process.env.OUT_DIR ?? "shots";
+mkdirSync(dir, { recursive: true });
 const h = height ? Number(height) : w < 768 ? 812 : 900;
-const out = height ? `shots/${id}-${progress}-${w}x${h}.png` : `shots/${id}-${progress}-${w}.png`;
+const out = height ? `${dir}/${id}-${progress}-${w}x${h}.png` : `${dir}/${id}-${progress}-${w}.png`;
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: w, height: h }, reducedMotion: process.env.REDUCED ? "reduce" : "no-preference" });
 const base = process.env.BASE_URL ?? "http://localhost:3111";
@@ -14,6 +15,7 @@ await page.waitForLoadState("networkidle");
 const title = await page.title();
 if (!title.includes("A Sala dos Buscadores")) throw new Error(`${base} is not this app (title: "${title}")`);
 await page.evaluate(([sectionId, p]) => {
+  if (sectionId === "bottom") return window.scrollTo(0, document.documentElement.scrollHeight);
   const el = document.getElementById(sectionId);
   if (!el) throw new Error(`section #${sectionId} not found`);
   const top = el.getBoundingClientRect().top + window.scrollY;
@@ -21,6 +23,8 @@ await page.evaluate(([sectionId, p]) => {
   window.scrollTo(0, top + range * p);
 }, [id, Number(progress)]);
 await page.waitForTimeout(900);
+if (process.env.CLICK) await page.click(process.env.CLICK);
+if (process.env.CLICK) await page.waitForTimeout(400);
 await page.screenshot({ path: out });
 await browser.close();
 console.log(out);

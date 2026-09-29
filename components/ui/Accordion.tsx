@@ -28,7 +28,7 @@ export function Accordion({ items, defaultOpen = 0 }: { items: FaqItem[]; defaul
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="flex w-full items-center justify-between gap-6 rounded-[14px] px-5 py-4 text-left md:gap-[107px] md:px-[42px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
+                className="btn btn-row flex w-full items-center justify-between gap-6 rounded-[14px] px-5 py-4 text-left md:gap-[107px] md:px-[42px]"
               >
                 <span className="text-lg font-normal leading-snug text-[#ebebeb] md:text-xl">{item.question}</span>
                 <svg

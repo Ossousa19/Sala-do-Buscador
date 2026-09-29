@@ -66,7 +66,7 @@ export function Nav({ nav }: { nav: NavContent }) {
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((o) => !o)}
-            className="rounded-full border border-cream/30 px-4 py-2 text-sm pointer-coarse:min-h-11 text-cream transition-transform duration-150 ease-cinema active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
+            className="btn btn-secondary rounded-full px-4 py-2 text-sm font-medium pointer-coarse:min-h-11"
           >
             {open ? nav.labels.close : nav.labels.menu}
           </button>

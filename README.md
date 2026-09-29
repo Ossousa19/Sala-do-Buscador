@@ -18,8 +18,7 @@ O projeto usa a **porta 3111** (dev, `npm start`, Playwright e o script de scree
 | `npm test` | Testes unitários e de componentes (Vitest + Testing Library) |
 | `npm run e2e` | Testes ponta a ponta (Playwright; gera o build de produção e sobe em 3111) |
 | `npm run shot -- <id> <progresso> <largura> [altura]` | Captura `shots/<id>-<progresso>-<largura>.png` com a cena `#id` no progresso 0–1 (requer o dev server; `REDUCED=1` simula movimento reduzido) |
-| `npm run check:assets` | Confere se todas as imagens e frames do Hero existem |
-| `npm run extract-frames -- <video>` | Extrai a sequência de frames do Hero (ffmpeg + cwebp) para `public/frames/hero/` e atualiza `content/hero-frames.json` |
+| `npm run check:assets` | Confere se todas as imagens do site existem |
 | `npm run lint` / `npx tsc --noEmit` | Lint e checagem de tipos |
 
 ## Onde fica cada coisa
@@ -27,7 +26,7 @@ O projeto usa a **porta 3111** (dev, `npm start`, Playwright e o script de scree
 - **Textos e links:** `content/site.ts` (tipos em `content/types.ts`). Nenhum texto fica fixo no JSX.
 - **Cenas:** `components/scenes/` — cada seção da página; as fixadas usam `components/motion/SceneTrack.tsx`.
 - **Movimento:** `components/motion/` e `lib/motion/math.ts` (use `holdRange` em faixas de rolagem).
-- **Imagens:** `public/images/**`; frames do Hero em `public/frames/hero/**`. As texturas (`public/images/textures/`) já estão giradas para paisagem; `velvet.webp` foi ampliada (lanczos) a partir do original de 375×500 do Figma.
+- **Imagens:** `public/images/**`. O Hero é feito de duas camadas do Figma: o céu (`public/images/salas/space.webp` + vídeo `public/assets/hero/cosmos.*`, compartilhado com as Salas) e a parede com o arco vazado (`public/images/hero/arch.webp`), que recebe o zoom. As texturas (`public/images/textures/`) já estão giradas para paisagem; `velvet.webp` foi ampliada (lanczos) a partir do original de 375×500 do Figma.
 - **Tokens visuais:** `app/globals.css`.
 
 Em produção, defina `NEXT_PUBLIC_SITE_URL` (ou publique na Vercel) para que as URLs de Open Graph apontem para o domínio real.

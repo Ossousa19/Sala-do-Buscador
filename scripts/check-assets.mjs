@@ -1,8 +1,8 @@
-import { existsSync, statSync, readFileSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 
 const files = [
   "public/images/brand/logo.svg",
-  "public/images/hero/door-still.webp",
+  "public/images/hero/arch.webp",
   "public/images/og.jpg",
   "public/images/salas/space.webp",
   "public/images/salas/proposito.webp",
@@ -18,17 +18,10 @@ const files = [
   ...[1, 2, 3, 4].map((n) => `public/images/trilhas/step-${n}.webp`),
   "public/assets/hero/cosmos.webm",
   "public/assets/hero/cosmos.mp4",
-  // TEMPORARY article covers (scripts/make-article-placeholders.py)
-  ...[1, 2, 3].map((n) => `public/images/artigos/placeholder-${n}.webp`),
+  ...["tome", "poimandres", "nag-hammadi"].map((n) => `public/images/artigos/${n}.webp`),
   // TEMPORARY member avatars (scripts/make-avatars.mjs)
   ...Array.from({ length: 24 }, (_, i) => `public/images/comunidade/avatars/avatar-${String(i + 1).padStart(2, "0")}.svg`),
 ];
-const manifest = JSON.parse(readFileSync("content/hero-frames.json", "utf8"));
-for (const variant of ["desktop", "mobile"]) {
-  for (let i = 1; i <= manifest[variant]; i++) {
-    files.push(`public/frames/hero/${variant}/frame_${String(i).padStart(4, "0")}.webp`);
-  }
-}
 const missing = files.filter((f) => !existsSync(f) || statSync(f).size === 0);
 if (missing.length) {
   console.error("Missing or empty assets:\n" + missing.join("\n"));

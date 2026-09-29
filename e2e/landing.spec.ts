@@ -49,7 +49,7 @@ test("reduced motion: scenes are not pinned", async ({ page }, info) => {
   for (const id of ["inicio", "salas", "curadoria", "perguntas", "trilhas"]) {
     await expect(page.locator(`#${id}`)).toHaveAttribute("data-reduced", "true");
   }
-  await expect(page.getByTestId("frame-sequence")).toHaveCount(0);
+  await expect(page.getByTestId("hero-arch")).not.toHaveAttribute("style", /scale/);
 });
 
 test("keyboard: tabbing from the Salas cards into Curadoria lands on a visible control", async ({ page }, info) => {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  clamp, coverRect, frameLoadOrder, indexAtProgress, nearestLoaded,
-  holdRange, progressForItem, progressToFrame, tunnelLayout, tunnelVisual, wrap,
+  archZoom, clamp, indexAtProgress, holdRange, progressForItem, tunnelLayout, tunnelVisual, wrap,
 } from "./math";
 
 describe("clamp", () => {
@@ -12,55 +11,18 @@ describe("clamp", () => {
   });
 });
 
-describe("progressToFrame", () => {
-  it("maps 0 → first frame and 1 → last frame", () => {
-    expect(progressToFrame(0, 120)).toBe(0);
-    expect(progressToFrame(1, 120)).toBe(119);
-    expect(progressToFrame(0.5, 121)).toBe(60);
+describe("archZoom", () => {
+  it("zooms until the door opening is wider than the viewport, with margin", () => {
+    for (const [vw, vh] of [[1440, 900], [1024, 768], [390, 844], [1920, 1080]]) {
+      const archW = (Math.max(vh, (0.8 * vw * 1536) / 2752) * 2752) / 1536;
+      const z = archZoom(vw, vh);
+      expect(z * 0.222 * archW).toBeGreaterThan(vw * 1.3);
+      expect(z).toBeGreaterThan(2);
+    }
   });
-  it("clamps out-of-range progress and zero frames", () => {
-    expect(progressToFrame(1.5, 10)).toBe(9);
-    expect(progressToFrame(-0.2, 10)).toBe(0);
-    expect(progressToFrame(0.5, 0)).toBe(0);
-  });
-});
-
-describe("frameLoadOrder", () => {
-  it("loads coarse first, then the last frame, then fills the gaps", () => {
-    expect(frameLoadOrder(10, 4)).toEqual([0, 4, 8, 9, 2, 6, 1, 3, 5, 7]);
-  });
-  it("contains every frame exactly once", () => {
-    const order = frameLoadOrder(121);
-    expect(order).toHaveLength(121);
-    expect(new Set(order).size).toBe(121);
-  });
-});
-
-describe("nearestLoaded", () => {
-  it("returns the target when loaded, or the nearest one (lower index wins a tie)", () => {
-    const loaded = [true, false, false, false, true];
-    expect(nearestLoaded(0, loaded)).toBe(0);
-    expect(nearestLoaded(1, loaded)).toBe(0);
-    expect(nearestLoaded(3, loaded)).toBe(4);
-    expect(nearestLoaded(2, loaded)).toBe(0);
-  });
-  it("returns -1 when nothing is loaded", () => {
-    expect(nearestLoaded(2, [false, false, false])).toBe(-1);
-  });
-});
-
-describe("coverRect", () => {
-  it("covers the canvas keeping the proportion and centers it", () => {
-    expect(coverRect(200, 100, 100, 100)).toEqual({ dx: -50, dy: 0, dw: 200, dh: 100 });
-  });
-  it("respects focalY when cropping vertically", () => {
-    expect(coverRect(100, 200, 100, 100, 0)).toEqual({ dx: 0, dy: 0, dw: 100, dh: 200 });
-    expect(coverRect(100, 200, 100, 100, 1)).toEqual({ dx: 0, dy: -100, dw: 100, dh: 200 });
-  });
-  it("respects focalX when cropping horizontally (like object-position x%)", () => {
-    expect(coverRect(200, 100, 100, 100, 0.5, 0)).toEqual({ dx: 0, dy: 0, dw: 200, dh: 100 });
-    expect(coverRect(200, 100, 100, 100, 0.5, 1)).toEqual({ dx: -100, dy: 0, dw: 200, dh: 100 });
-    expect(coverRect(200, 100, 100, 100, 0.5, 0.25)).toEqual({ dx: -25, dy: 0, dw: 200, dh: 100 });
+  it("is gentler on portrait screens (the arch already fills the width)", () => {
+    expect(archZoom(1440, 900)).toBeCloseTo(5.45, 1);
+    expect(archZoom(390, 844)).toBeCloseTo(2.06, 1);
   });
 });
 

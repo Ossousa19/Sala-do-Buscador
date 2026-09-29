@@ -2,50 +2,6 @@ export function clamp(v: number, min = 0, max = 1): number {
   return Math.min(max, Math.max(min, v));
 }
 
-export function progressToFrame(progress: number, frameCount: number): number {
-  if (frameCount <= 0) return 0;
-  return Math.round(clamp(progress) * (frameCount - 1));
-}
-
-export function frameLoadOrder(frameCount: number, stride = 8): number[] {
-  const order: number[] = [];
-  const seen = new Set<number>();
-  const add = (i: number) => {
-    if (i >= 0 && i < frameCount && !seen.has(i)) {
-      seen.add(i);
-      order.push(i);
-    }
-  };
-  let s = Math.max(1, stride);
-  let first = true;
-  while (true) {
-    for (let i = 0; i < frameCount; i += s) add(i);
-    if (first) {
-      add(frameCount - 1);
-      first = false;
-    }
-    if (s === 1) break;
-    s = Math.max(1, Math.floor(s / 2));
-  }
-  return order;
-}
-
-export function nearestLoaded(target: number, loaded: readonly boolean[]): number {
-  for (let d = 0; d < loaded.length; d++) {
-    if (loaded[target - d]) return target - d;
-    if (loaded[target + d]) return target + d;
-  }
-  return -1;
-}
-
-/** object-fit: cover; focalX/focalY (0..1) work like object-position percentages. */
-export function coverRect(iw: number, ih: number, cw: number, ch: number, focalY = 0.5, focalX = 0.5) {
-  const scale = Math.max(cw / iw, ch / ih);
-  const dw = iw * scale;
-  const dh = ih * scale;
-  return { dx: ((cw - dw) * focalX) || 0, dy: ((ch - dh) * focalY) || 0, dw, dh };
-}
-
 export type TunnelLayout = { zs: number[]; total: number };
 
 export function tunnelLayout(
@@ -84,6 +40,17 @@ export function indexAtProgress(p: number, starts: readonly number[]): number {
 export function wrap(min: number, max: number, v: number): number {
   const range = max - min;
   return ((((v - min) % range) + range) % range) + min;
+}
+
+/**
+ * Final zoom of the Hero arch layer (2752×1536, box = max(viewport height, 80vw tall-equivalent),
+ * origin 50% 62%) so the door opening (22.2% of the arch width, top at 21.4% of its height)
+ * swallows the whole viewport, with margin for the curved top corners.
+ */
+export function archZoom(vw: number, vh: number): number {
+  const h = Math.max(vh, (0.8 * vw * 1536) / 2752);
+  const w = (h * 2752) / 1536;
+  return Math.max(0.62 / (0.62 - 0.214), vw / (0.222 * w)) * 1.35;
 }
 
 /** Pads a scroll-linked range to 0..1 holding edge values (avoids implicit WAAPI keyframes). */

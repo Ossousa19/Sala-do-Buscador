@@ -11,8 +11,7 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "check:assets": "node scripts/check-assets.mjs",
-    "shot": "node scripts/shot.mjs",
-    "extract-frames": "bash scripts/extract-frames.sh"
+    "shot": "node scripts/shot.mjs"
   },
   "dependencies": {
     "lenis": "1.3",

@@ -6,9 +6,7 @@ import type { SalasContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
 import { DepthTunnel, type TunnelEntry } from "@/components/motion/DepthTunnel";
 import { SalaCard } from "@/components/ui/SalaCard";
-import { CosmosVideo } from "@/components/motion/CosmosVideo";
-import { heroFrameUrls } from "@/lib/heroFrames";
-import { holdRange, progressForItem, tunnelLayout } from "@/lib/motion/math";
+import { progressForItem, tunnelLayout } from "@/lib/motion/math";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useNearViewport } from "@/lib/useNearViewport";
 
@@ -27,7 +25,7 @@ const DESKTOP_POS = [
 
 export function Salas({ content }: { content: SalasContent }) {
   return (
-    <SceneTrack id="salas" labelledBy="salas-title" heights={SALAS_TRACK} revealProgress={SALAS_REVEAL} className="bg-night">
+    <SceneTrack id="salas" labelledBy="salas-title" heights={SALAS_TRACK} revealProgress={SALAS_REVEAL}>
       {(progress, reduced) => (reduced ? <SalasGrid content={content} /> : <SalasTunnel content={content} progress={progress} />)}
     </SceneTrack>
   );
@@ -49,10 +47,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
     () => tunnelLayout(content.salas.length, isMobile ? { spacing: 1000, start: 4200, exit: 900 } : { start: 4200 }),
     [content.salas.length, isMobile],
   );
-  const bgScale = useTransform(progress, [0, 1], [1, 1.25]);
-  // Hero handoff: the last Hero frame sits on top and dissolves into the Salas sky.
-  const handoffFrame = useMemo(() => heroFrameUrls(isMobile ? "mobile" : "desktop").at(-1), [isMobile]);
-  const handoffOpacity = useTransform(progress, ...holdRange([0, 0.14], [1, 0]));
+  // The sky is the shared CosmosBackdrop behind the Hero and this scene (no handoff image, no seam).
   const titleOpacity = useTransform(progress, [0, 0.06, 0.1, 0.18, 0.9, 1], [0, 1, 1, 0, 0, 1]);
 
   // Card/background images stay off the critical path until the tunnel is about to be scrolled into view.
@@ -71,19 +66,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
 
   return (
     <div ref={rootRef} className="relative h-full w-full overflow-hidden">
-      <motion.div aria-hidden="true" className="absolute inset-0" style={{ scale: bgScale }}>
-        {near && <CosmosVideo />}
-      </motion.div>
       <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 6} className="absolute inset-0" />
-      <motion.img
-        aria-hidden="true"
-        alt=""
-        src={handoffFrame}
-        loading="lazy"
-        decoding="async"
-        style={{ opacity: handoffOpacity, objectPosition: "50% 57%" }}
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-      />
       <motion.div style={{ opacity: titleOpacity }} className="pointer-events-none absolute inset-0 grid place-items-center px-4">
         <SalasTitle content={content} />
       </motion.div>

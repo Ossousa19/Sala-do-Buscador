@@ -5,11 +5,12 @@ import { ArticleCard } from "@/components/ui/ArticleCard";
 import { MuseumFrame } from "@/components/ui/MuseumFrame";
 import { Texture } from "@/components/ui/Texture";
 
-// Figma: heights 360 / 492 / 434 on a 360 width; vertical offsets 54 / 0 / 137
+// Covers are a fixed 16:9 (refine brief); the Figma column stagger (offsets 54 / 0 / 137) and
+// the per-column parallax speeds stay.
 const LAYOUT = [
-  { aspect: "360 / 360", offset: "md:mt-[54px]", speed: 40 },
-  { aspect: "360 / 492", offset: "", speed: 90 },
-  { aspect: "360 / 434", offset: "md:mt-[137px]", speed: 60 },
+  { offset: "md:mt-[54px]", speed: 40 },
+  { offset: "", speed: 90 },
+  { offset: "md:mt-[137px]", speed: 60 },
 ];
 
 export function Artigos({ content }: { content: ArtigosContent }) {
@@ -33,7 +34,7 @@ export function Artigos({ content }: { content: ArtigosContent }) {
           {content.articles.map((article, i) => (
             <li key={article.id} className={LAYOUT[i].offset}>
               <ParallaxLayer speed={LAYOUT[i].speed}>
-                <ArticleCard article={article} aspect={LAYOUT[i].aspect} />
+                <ArticleCard article={article} />
               </ParallaxLayer>
             </li>
           ))}

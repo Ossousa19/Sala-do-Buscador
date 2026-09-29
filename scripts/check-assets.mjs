@@ -16,6 +16,10 @@ const files = [
   "public/images/icons/arrow-next.svg",
   "public/images/perguntas/scene.webp",
   ...[1, 2, 3, 4].map((n) => `public/images/trilhas/step-${n}.webp`),
+  "public/assets/hero/cosmos.webm",
+  "public/assets/hero/cosmos.mp4",
+  // TEMPORARY article covers (scripts/make-article-placeholders.py)
+  ...[1, 2, 3].map((n) => `public/images/artigos/placeholder-${n}.webp`),
 ];
 const manifest = JSON.parse(readFileSync("content/hero-frames.json", "utf8"));
 for (const variant of ["desktop", "mobile"]) {

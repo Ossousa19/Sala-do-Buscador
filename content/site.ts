@@ -90,6 +90,8 @@ export const site: SiteContent = {
     articles: [
       {
         id: "tome",
+        // TODO: substituir pela foto real do artigo
+        image: "/images/artigos/placeholder-1.webp",
         kicker: "Artigo · 14 min · Biblioteca de Nag Hammadi",
         title: "O Evangelho de Tomé e os 114 ditos",
         author: "Marvin Meyer · Estudioso de textos coptas",
@@ -97,6 +99,8 @@ export const site: SiteContent = {
       },
       {
         id: "bardo",
+        // TODO: substituir pela foto real do artigo
+        image: "/images/artigos/placeholder-2.webp",
         kicker: "Vídeo · 22 min · Budismo tibetano",
         title: "O Bardo Thödol e a travessia da morte",
         author: "Curadoria da Sala · Tradições do Himalaia",
@@ -104,6 +108,8 @@ export const site: SiteContent = {
       },
       {
         id: "tao",
+        // TODO: substituir pela foto real do artigo
+        image: "/images/artigos/placeholder-3.webp",
         kicker: "Verbete · 8 min · Taoísmo",
         title: "Tao Te Ching: o caminho que não se nomeia",
         author: "Curadoria da Sala · Filosofia chinesa clássica",

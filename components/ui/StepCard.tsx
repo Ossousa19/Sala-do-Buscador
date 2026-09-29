@@ -13,7 +13,7 @@ export function StepCard({ step }: { step: Step }) {
         alt=""
         width={88}
         height={97}
-        className="h-14 w-auto shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-1 stairs:mx-auto stairs:h-24"
+        className="h-14 w-auto shrink-0 transition-transform duration-300 ease-cinema group-hover:-translate-y-1 stairs:mx-auto stairs:h-24"
       />
       <span className="block">
         <span className="block font-display text-xl leading-[1.3] text-cream stairs:mt-4 stairs:whitespace-nowrap">{step.title}</span>

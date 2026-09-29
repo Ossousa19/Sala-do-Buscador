@@ -34,7 +34,7 @@ export function Nav({ nav }: { nav: NavContent }) {
         )}
       />
       <nav aria-label={nav.labels.primary} className="container-page relative flex items-center justify-between">
-        <a href="#inicio" aria-label={nav.labels.logo} className="origin-left rounded-sm transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
+        <a href="#inicio" aria-label={nav.labels.logo} className="origin-left rounded-sm pointer-coarse:py-[7px] transition-transform duration-300 ease-cinema focus-visible:outline-2 focus-visible:outline-cream"
           style={{ transform: compact ? "scale(0.776)" : "scale(1)" }}
         >
           <Image
@@ -49,7 +49,7 @@ export function Nav({ nav }: { nav: NavContent }) {
         <ul className="hidden items-center gap-8 lg:flex">
           {nav.links.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="text-sm font-medium text-cream/60 transition-colors duration-200 hover:text-cream focus-visible:text-cream">
+              <a href={link.href} className="text-sm font-medium text-cream/60 rounded-sm transition-colors duration-200 hover:text-cream focus-visible:text-cream focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream">
                 {link.label}
               </a>
             </li>
@@ -66,7 +66,7 @@ export function Nav({ nav }: { nav: NavContent }) {
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((o) => !o)}
-            className="rounded-full border border-cream/30 px-4 py-2 text-sm text-cream transition-transform duration-150 active:scale-[0.97]"
+            className="rounded-full border border-cream/30 px-4 py-2 text-sm pointer-coarse:min-h-11 text-cream transition-transform duration-150 ease-cinema active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream"
           >
             {open ? nav.labels.close : nav.labels.menu}
           </button>
@@ -76,7 +76,7 @@ export function Nav({ nav }: { nav: NavContent }) {
         <ul id="menu-mobile" className="container-page relative mt-3 flex flex-col gap-1 rounded-2xl bg-night/95 p-4 lg:hidden">
           {nav.links.map((link) => (
             <li key={link.href}>
-              <a href={link.href} onClick={() => setOpen(false)} className="block rounded-lg px-3 py-3 text-base text-cream/80 hover:bg-white/5">
+              <a href={link.href} onClick={() => setOpen(false)} className="block rounded-lg px-3 py-3 text-base text-cream/80 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-cream">
                 {link.label}
               </a>
             </li>

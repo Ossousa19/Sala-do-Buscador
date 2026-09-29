@@ -65,13 +65,13 @@ function FooterBody({ content, progress, reduced, className }: { content: Footer
           {content.columns.map((col) => (
             <nav key={col.title} aria-label={col.title} className="flex flex-col gap-4">
               <p className="text-base text-white/50">{col.title}</p>
-              <ul className="flex flex-col gap-4">
+              <ul className="flex flex-col gap-4 pointer-coarse:gap-0">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})}
-                      className="text-base leading-[23.4px] text-white transition-colors duration-200 hover:text-white/70"
+                      className="inline-block text-base leading-[23.4px] text-white pointer-coarse:py-[11px] transition-colors duration-200 hover:text-white/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}
                     </a>

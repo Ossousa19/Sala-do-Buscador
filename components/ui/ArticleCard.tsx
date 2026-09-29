@@ -19,7 +19,7 @@ export function ArticleCard({ article, aspect }: { article: Article; aspect: str
       </div>
       <div className="mt-8 flex max-w-[350px] flex-col gap-3">
         <p className="text-xs font-light uppercase leading-[1.2] text-white/60">{article.kicker}</p>
-        <h3 className="font-display text-2xl font-medium leading-[1.05] text-white/80">{article.title}</h3>
+        <h3 className="max-w-[236px] font-display text-2xl font-medium leading-[1.05] text-white/80">{article.title}</h3>
         <p className="text-base font-light leading-[1.2] text-white/60">{article.author}</p>
       </div>
     </a>

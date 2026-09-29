@@ -14,20 +14,22 @@ const LAYOUT = [
 
 export function Artigos({ content }: { content: ArtigosContent }) {
   return (
-    <section id="artigos" aria-labelledby="artigos-title" className="relative overflow-hidden bg-wine-deep py-[clamp(96px,10vw,140px)]">
-      <Image src="/images/textures/velvet.webp" alt="" fill sizes="100vw" className="object-cover opacity-25" />
+    <section id="artigos" aria-labelledby="artigos-title" className="relative overflow-hidden bg-[#160404] py-[clamp(96px,10vw,140px)]">
+      <div aria-hidden="true" className="absolute left-1/2 top-1/2 aspect-square h-[200%] -translate-x-1/2 -translate-y-1/2 -rotate-90 opacity-[0.28]">
+        <Image src="/images/textures/velvet.webp" alt="" fill sizes="100vw" className="object-cover" />
+      </div>
       <MuseumFrame tone="cream" />
       <div className="container-page relative">
-        <div className="mx-auto max-w-[888px] text-center">
+        <div className="mx-auto max-w-[900px] text-center">
           <TwoToneTitle
             id="artigos-title"
             dim={content.titleDim}
             lit={content.titleLit}
-            className="text-[clamp(40px,4.4vw,64px)] leading-none"
+            className="pb-2 text-[clamp(40px,5.7vw,82px)] leading-[0.72]"
             dimClassName="text-white/60"
             litClassName="text-cream"
           />
-          <p className="mx-auto mt-10 max-w-[475px] text-base font-light leading-[1.2] text-white/70">{content.subtitle}</p>
+          <p className="mx-auto mt-[42px] max-w-[475px] text-base font-light leading-[1.2] text-white/80">{content.subtitle}</p>
         </div>
         <ul className="mt-16 grid gap-16 md:mt-24 md:grid-cols-3 md:gap-[52px]">
           {content.articles.map((article, i) => (

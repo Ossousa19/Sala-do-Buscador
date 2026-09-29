@@ -68,22 +68,20 @@ public/
 
 A página alterna ambientes, como as salas de um museu. Cada cena "acende" o próprio ambiente.
 
-| Token | Uso | Valor inicial |
+| Token | Uso | Valor (Figma) |
 |---|---|---|
-| `--night` | Hero, Sala | `#120C0C` |
-| `--wine-deep` | fundo dos Artigos | `#2B0E12` |
-| `--wine` | ícones das Trilhas, acentos | `#7A2430` |
-| `--stone` | fundo das Trilhas | `#161515` |
-| `--parchment` | fundo da Curadoria | `#E8D8B6` |
-| `--ink` | títulos sobre pergaminho | `#5A2A2E` |
-| `--cream` | títulos sobre fundo escuro | `#F2E6D2` |
-| `--mist` | secundário, parte apagada dos títulos | `--cream` a 55% |
-
-Os valores exatos são extraídos do Figma (`get_design_context`) na implementação e substituem os iniciais.
+| `night` | Hero, Salas, fundos escuros | `#0c0404` |
+| `cream` | títulos acesos, menu | `#f6e7ce` |
+| `bone` | títulos do Hero e das Salas | `#d9d9d9` |
+| `wine` | texto dos botões, avatares | `#3b0a0a` |
+| `wine-deep` | fundo dos Artigos (sob a textura) | `#2b0e12` |
+| `ink` | títulos sobre pergaminho (60% / 80%) | `#390007` |
+| `charcoal` | texto sobre pergaminho | `#1f1f1d` |
+| `parchment` | cor de apoio sob a textura da Curadoria | `#e8d8b6` |
 
 **Tipografia**
-- Títulos: a serifa editorial do Figma. O nome exato é confirmado via `get_design_context`. Tamanho fluido com `clamp()`, de ~40px a ~96px.
-- Texto e interface: sans do Figma (provavelmente Inter). Metadados em caixa alta com espaçamento entre letras.
+- Títulos: **Gambetta** (Fontshare; 400 e 500). Tamanho fluido com `clamp()`, de ~40px a ~84px.
+- Texto e interface: **Inter** (300, 500 e 600). Metadados em caixa alta com espaçamento entre letras.
 - Títulos em dois tons: a primeira parte em `--mist` e a segunda acesa. Na animação, a parte acesa "liga".
 
 **Grid:** container de 1184px (1440 − 2 × 128). No mobile, margens de 16–24px.
@@ -151,7 +149,7 @@ Todos os textos ficam em `content/site.ts`. Os que ainda são placeholder no Fig
 - Curadoria: princípios 01 e 03 (só o 02, "Neutralidade doutrinária", existe).
 - Sala: 5 Salas. Os nomes além de "Propósito" e "Fé e do Poder" ficam como rascunho.
 - Comunidade: nomes de avatar genéricos.
-- Trilhas: o ícone do degrau I é recriado no mesmo estilo dos outros.
+- Trilhas: os ícones dos 4 degraus são exportados do Figma.
 
 ## 8. Desempenho e acessibilidade
 

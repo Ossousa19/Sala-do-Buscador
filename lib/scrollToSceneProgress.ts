@@ -32,6 +32,13 @@ export function scrollToSceneProgress(sectionId: string, progress: number, behav
   else window.scrollTo({ top: target, behavior: instant ? "instant" : "smooth" });
 }
 
+/** Back to the top of the page, through Lenis when it is running (instant with reduced motion). */
+export function scrollToTop() {
+  const instant = prefersReducedMotion();
+  if (lenis) lenis.scrollTo(0, { immediate: instant, force: true });
+  else window.scrollTo({ top: 0, behavior: instant ? "instant" : "smooth" });
+}
+
 /**
  * Scrolls to a section where its content is visible: pinned scenes declare `data-reveal-progress`
  * (SceneTrack's revealProgress); anything else (or a reduced-motion, unpinned scene) lands on its top.

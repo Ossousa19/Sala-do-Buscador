@@ -9,6 +9,7 @@ import { Trilhas } from "@/components/scenes/Trilhas";
 import { Artigos } from "@/components/scenes/Artigos";
 import { Comunidade } from "@/components/scenes/Comunidade";
 import { Faq } from "@/components/scenes/Faq";
+import { Chamado } from "@/components/scenes/Chamado";
 import { FooterCurtain } from "@/components/scenes/FooterCurtain";
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
         <Artigos content={site.artigos} />
         <Comunidade content={site.comunidade} />
         <Faq content={site.faq} />
+        <Chamado content={site.chamado} />
       </main>
       <FooterCurtain content={site.footer} />
     </>

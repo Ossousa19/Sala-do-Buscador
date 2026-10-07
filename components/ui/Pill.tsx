@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "solid" | "glass" | "outline";
+type Variant = "solid" | "glass" | "outline" | "stone";
 
 // Interaction states live in the shared `btn` utilities (app/globals.css).
 const variants: Record<Variant, string> = {
   solid: "btn-primary px-5 py-2.5",
   glass: "btn-secondary px-7 py-3",
   outline: "btn-outline px-5 py-3",
+  // Black pill, light outer ring (Chamado CTA, marble background)
+  stone: "btn-stone px-8 py-3",
 };
 
 export function Pill({ href, children, variant = "solid", external, className }: {

@@ -35,7 +35,7 @@ describe("Nav", () => {
 describe("HeroDoor", () => {
   it("has the page's only h1 and the arch layer (the sky is the shared backdrop)", () => {
     render(<HeroDoor content={site.hero} />);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("A porta está aberta");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("A porta continua aberta");
     expect(document.getElementById("inicio")).toHaveAttribute("aria-labelledby", "hero-title");
     expect(screen.getByTestId("hero-arch").querySelector("img")).toHaveAttribute("src", "/images/hero/arch.webp");
   });

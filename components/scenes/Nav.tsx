@@ -53,7 +53,7 @@ export function Nav({ nav }: { nav: NavContent }) {
               alt=""
               width={134}
               height={41}
-              priority
+              loading="eager"
               className="h-auto w-[112px] lg:w-[134px]"
             />
           </a>

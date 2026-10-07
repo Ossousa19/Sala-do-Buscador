@@ -19,7 +19,7 @@ export function CosmosVideo({ className }: { className?: string }) {
       muted
       loop
       playsInline
-      preload="auto"
+      preload="metadata"
       disablePictureInPicture
       poster={COSMOS_POSTER}
       // React only sets `muted` as a property; keep it explicit so autoplay is never blocked.

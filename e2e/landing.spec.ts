@@ -16,14 +16,14 @@ async function visibility(locator: Locator) {
   });
 }
 
-const IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq"];
+const IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq", "chamado"];
 
 test("the whole page renders with no console errors", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/A porta\s*está aberta/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/A porta\s*continua aberta/);
   for (const id of IDS) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await expect(page.locator(`#${id}`)).toBeAttached();

@@ -5,20 +5,24 @@ import { FooterCurtain } from "./FooterCurtain";
 import { setMatchMedia } from "@/vitest.setup";
 
 describe("FooterCurtain", () => {
-  it("footer with columns, credit and a readable wordmark", () => {
+  it("keeps every piece of information: logo, phrase, all columns and links, copyright, credit, back to top", () => {
     render(<FooterCurtain content={site.footer} />);
     const footer = screen.getByRole("contentinfo");
-    expect(footer).toHaveTextContent("2026 © A Sala dos Buscadores");
-    expect(screen.getByRole("navigation", { name: "Menu" })).toBeInTheDocument();
-    expect(screen.getByText("A SALA DOS BUSCADORES", { selector: ".sr-only" })).toBeInTheDocument();
+    expect(screen.getByAltText(site.footer.logoAlt)).toBeInTheDocument();
+    expect(footer).toHaveTextContent(site.footer.description);
+    for (const col of site.footer.columns) {
+      const nav = screen.getByRole("navigation", { name: col.title });
+      for (const link of col.links) expect(nav).toHaveTextContent(link.label);
+    }
+    expect(footer).toHaveTextContent(site.footer.copyright);
+    expect(footer).toHaveTextContent(site.footer.credit);
+    expect(screen.getByRole("button", { name: /Voltar ao topo/ })).toBeInTheDocument();
   });
 
-  it("the decorative wordmark is visible (not painted in the footer background colour)", () => {
+  it("no longer has the giant wordmark", () => {
     render(<FooterCurtain content={site.footer} />);
-    const mark = screen.getByTestId("footer-wordmark");
-    expect(mark).toHaveAttribute("aria-hidden", "true");
-    expect(mark.style.color).not.toBe("");
-    expect(mark.style.color.replace(/\s/g, "")).not.toBe("rgb(17,19,19)");
+    expect(screen.queryByTestId("footer-wordmark")).toBeNull();
+    expect(screen.queryByText("A SALA DOS BUSCADORES")).toBeNull();
   });
 });
 

@@ -10,7 +10,7 @@ export function Faq({ content }: { content: FaqContent }) {
     <section
       id="faq"
       aria-labelledby="faq-title"
-      className="relative bg-[#161515] bg-[url('/images/textures/stone-row.webp')] bg-[length:1513px_253px] bg-repeat py-16"
+      className="relative bg-[#161515] bg-[url('/images/textures/stone-row.webp')] bg-[length:1513px_253px] bg-repeat section-y"
     >
       <div className="container-page">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">

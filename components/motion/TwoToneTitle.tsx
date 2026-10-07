@@ -25,7 +25,9 @@ export function TwoToneTitle({ dim, lit, id, className, dimClassName, litClassNa
   return (
     <h2 ref={ref} id={id} className={cn("font-display", className)}>
       <span className={dimClassName}>{dim}</span>
-      {breakAfterDim ? <br /> : " "}
+      {" "}
+      {/* the space keeps the words apart in the accessible name when the line breaks */}
+      {breakAfterDim && <br />}
       <motion.span className={cn(litClassName, "motion-reduce:opacity-100!")} style={{ opacity: reduced ? 1 : litOpacity }}>
         {lit}
       </motion.span>

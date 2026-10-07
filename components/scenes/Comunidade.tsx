@@ -20,7 +20,7 @@ export function Comunidade({ content }: { content: ComunidadeContent }) {
   const perRow = Math.ceil(content.members.length / ROWS.length);
   const [first, ...rest] = content.title.split(" ");
   return (
-    <section id="comunidade" aria-labelledby="comunidade-title" className="relative overflow-hidden bg-cream pb-16 pt-[115px]">
+    <section id="comunidade" aria-labelledby="comunidade-title" className="section-y relative overflow-hidden bg-cream">
       <Texture src="/images/textures/parchment.webp" opacity={0.26} />
       <div className="container-page relative mx-auto flex max-w-[426px] flex-col items-center text-center">
         <span className="rounded-[20px] border border-[#807f78] p-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-[#807f78]">{content.badge}</span>

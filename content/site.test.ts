@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { site } from "./site";
 
-const SECTION_IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq"];
+const SECTION_IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq", "chamado"];
 
 describe("site content", () => {
   it("has the quantities the scenes expect", () => {
@@ -10,7 +10,7 @@ describe("site content", () => {
     expect(site.perguntas.themes).toHaveLength(10);
     expect(site.perguntas.textStrong.length).toBeGreaterThan(0);
     expect(site.trilhas.steps).toHaveLength(4);
-    expect(site.artigos.articles).toHaveLength(3);
+    expect(site.artigos.articles).toHaveLength(5);
     expect(site.faq.items).toHaveLength(4);
     expect(site.comunidade.members.length).toBeGreaterThanOrEqual(24);
   });
@@ -44,8 +44,8 @@ describe("site content", () => {
     expect(new Set(avatars).size).toBe(22);
   });
 
-  it("3 distinct articles", () => {
+  it("5 distinct articles", () => {
     const titles = new Set(site.artigos.articles.map((a) => a.title));
-    expect(titles.size).toBe(3);
+    expect(titles.size).toBe(5);
   });
 });

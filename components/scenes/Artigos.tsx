@@ -1,23 +1,15 @@
+"use client";
 import type { ArtigosContent } from "@/content/types";
-import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
+import { ArticleReel } from "@/components/motion/ArticleReel";
 import { TwoToneTitle } from "@/components/motion/TwoToneTitle";
-import { ArticleCard } from "@/components/ui/ArticleCard";
-import { MuseumFrame } from "@/components/ui/MuseumFrame";
-import { Texture } from "@/components/ui/Texture";
+import { usePrefersReducedMotion } from "@/lib/useMediaQuery";
 
-// Figma 196:202: column stagger (offsets 54 / 0 / 137), photo ratios 360×360 / 360×492 /
-// 360×434, title widths 236 / full / 236, plus per-column parallax speeds.
-const LAYOUT = [
-  { offset: "md:mt-[54px]", speed: 40, cover: "aspect-square", title: "max-w-[236px]" },
-  { offset: "", speed: 90, cover: "aspect-[360/492]", title: "" },
-  { offset: "md:mt-[137px]", speed: 60, cover: "aspect-[360/434]", title: "max-w-[236px]" },
-];
-
+// Title in the page container, then the reel full-bleed below it (its edge cards run past the
+// viewport, as in the for-living.it reference). No pin: the section scrolls normally.
 export function Artigos({ content }: { content: ArtigosContent }) {
+  const reduced = usePrefersReducedMotion();
   return (
-    <section id="artigos" aria-labelledby="artigos-title" className="relative overflow-hidden bg-[#160404] py-[clamp(96px,10vw,140px)]">
-      <Texture src="/images/textures/velvet.webp" opacity={0.28} />
-      <MuseumFrame tone="cream" />
+    <section id="artigos" aria-labelledby="artigos-title" className="section-y relative overflow-hidden bg-[#270505]">
       <div className="container-page relative">
         <div className="mx-auto max-w-[900px] text-center">
           <TwoToneTitle
@@ -30,15 +22,9 @@ export function Artigos({ content }: { content: ArtigosContent }) {
           />
           <p className="mx-auto mt-[42px] max-w-[475px] text-base font-light leading-[1.2] text-white/80">{content.subtitle}</p>
         </div>
-        <ul className="mt-16 grid gap-16 md:mt-24 md:grid-cols-3 md:gap-[52px]">
-          {content.articles.map((article, i) => (
-            <li key={article.id} className={LAYOUT[i].offset}>
-              <ParallaxLayer speed={LAYOUT[i].speed}>
-                <ArticleCard article={article} coverClassName={LAYOUT[i].cover} titleClassName={LAYOUT[i].title} />
-              </ParallaxLayer>
-            </li>
-          ))}
-        </ul>
+      </div>
+      <div className="relative mt-14 md:mt-[clamp(56px,6vw,88px)]">
+        <ArticleReel articles={content.articles} reduced={reduced} />
       </div>
     </section>
   );

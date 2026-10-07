@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // separate local clone of this repo, not part of the app
+    "Sala-do-Buscador/**",
   ]),
 ]);
 

@@ -9,16 +9,13 @@ const files = [
   "public/images/salas/fe-poder.webp",
   "public/images/textures/parchment.webp",
   "public/images/textures/stone-row.webp",
-  "public/images/textures/velvet.webp",
-  "public/images/ornaments/finial-ink.svg",
-  "public/images/ornaments/finial-cream.svg",
+  "public/images/ornaments/side-left.svg",
   "public/images/icons/arrow-prev.svg",
   "public/images/icons/arrow-next.svg",
   "public/images/perguntas/scene.webp",
-  ...[1, 2, 3, 4].map((n) => `public/images/trilhas/step-${n}.webp`),
   "public/assets/hero/cosmos.webm",
   "public/assets/hero/cosmos.mp4",
-  ...["tome", "poimandres", "nag-hammadi"].map((n) => `public/images/artigos/${n}.webp`),
+  ...["tome-caravaggio", "hermes-siena", "nag-hammadi-codex-ii", "tabua-esmeralda-khunrath", "karnak-roberts"].map((n) => `public/images/artigos/${n}.webp`),
   ...Array.from({ length: 22 }, (_, i) => `public/images/comunidade/avatars/user-${String(i + 1).padStart(2, "0")}.webp`),
 ];
 const missing = files.filter((f) => !existsSync(f) || statSync(f).size === 0);

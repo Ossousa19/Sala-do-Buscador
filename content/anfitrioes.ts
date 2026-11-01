@@ -146,8 +146,16 @@ export const anfitrioes: AnfitrioesContent = {
     ...site.footer,
     columns: [
       { title: "Anfitriões", links: navLinks.filter((l) => l.href.startsWith("#")) },
-      { title: "A Sala", links: [{ label: "Início", href: "/" }, { label: "Salas", href: "/#salas" }, { label: "Artigos", href: "/#artigos" }] },
-      ...site.footer.columns.filter((c) => c.title !== "Menu"),
+      {
+        title: "A Sala",
+        links: [
+          { label: "Início", href: "/" },
+          { label: "Salas", href: "/#salas" },
+          { label: "Artigos", href: "/#artigos" },
+          ...site.footer.columns.filter((c) => c.title === "Social").flatMap((c) => c.links),
+        ],
+      },
+      ...site.footer.columns.filter((c) => c.title === "Legal"),
     ],
   },
 };

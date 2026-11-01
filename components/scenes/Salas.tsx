@@ -10,7 +10,7 @@ import { progressForItem, tunnelLayout } from "@/lib/motion/math";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useNearViewport } from "@/lib/useNearViewport";
 
-export const SALAS_TRACK = { desktop: 400, mobile: 260 };
+export const SALAS_TRACK = { desktop: 340, mobile: 220 };
 // Title fully visible (after the Hero handoff has mostly dissolved): anchors land here.
 export const SALAS_REVEAL = 0.08;
 
@@ -66,7 +66,7 @@ function SalasTunnel({ content, progress }: { content: SalasContent; progress: M
 
   return (
     <div ref={rootRef} className="relative h-full w-full overflow-hidden">
-      <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 6} className="absolute inset-0" />
+      <DepthTunnel items={items} layout={layout} progress={progress} maxBlur={isMobile ? 0 : 3} solo={isMobile} className="absolute inset-0" />
       <motion.div style={{ opacity: titleOpacity }} className="pointer-events-none absolute inset-0 grid place-items-center px-4">
         <SalasTitle content={content} />
       </motion.div>

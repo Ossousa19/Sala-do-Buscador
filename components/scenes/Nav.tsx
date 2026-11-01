@@ -66,11 +66,11 @@ export function Nav({ nav }: { nav: NavContent }) {
               </li>
             ))}
             <li>
-              <Pill href={nav.cta.href}>{nav.cta.label}</Pill>
+              <Pill href={nav.cta.href} size="sm">{nav.cta.label}</Pill>
             </li>
           </ul>
           <div className="flex items-center gap-2 lg:hidden">
-            <Pill href={nav.cta.href}>{nav.cta.label}</Pill>
+            <Pill href={nav.cta.href} size="sm">{nav.cta.label}</Pill>
             <button
               ref={menuButton}
               type="button"

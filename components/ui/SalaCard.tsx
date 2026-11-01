@@ -12,6 +12,8 @@ export function SalaCard({ sala, size, focusProgress }: { sala: Sala; size: keyo
   return (
     <a
       href={sala.href}
+      target="_blank"
+      rel="noreferrer"
       data-focus-progress={focusProgress}
       className={cn(
         "group relative block aspect-video overflow-hidden rounded-sm shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)]",

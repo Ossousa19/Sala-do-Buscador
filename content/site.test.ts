@@ -1,18 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { site } from "./site";
 
-const SECTION_IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "comunidade", "faq", "chamado"];
+const SECTION_IDS = ["inicio", "salas", "curadoria", "perguntas", "trilhas", "artigos", "leitura", "conquistas", "anfitriao", "faq", "chamado"];
 
 describe("site content", () => {
   it("has the quantities the scenes expect", () => {
-    expect(site.salas.salas).toHaveLength(5);
+    expect(site.salas.salas).toHaveLength(4);
     expect(site.curadoria.principles).toHaveLength(3);
     expect(site.perguntas.themes).toHaveLength(10);
     expect(site.perguntas.textStrong.length).toBeGreaterThan(0);
     expect(site.trilhas.steps).toHaveLength(4);
-    expect(site.artigos.articles).toHaveLength(5);
-    expect(site.faq.items).toHaveLength(4);
-    expect(site.comunidade.members.length).toBeGreaterThanOrEqual(24);
+    expect(site.artigos.items).toHaveLength(6);
+    expect(site.faq.items).toHaveLength(5);
   });
 
   it("contains no leftover template text", () => {
@@ -35,17 +34,13 @@ describe("site content", () => {
     expect(footerMenu).toEqual(site.nav.links.map((l) => l.href).filter((h) => footerMenu.includes(h)));
   });
 
-  it("every member has a unique name; the 22 Figma photos are used once each", () => {
-    const names = site.comunidade.members.map((m) => m.name);
-    expect(new Set(names).size).toBe(names.length);
-    const avatars = site.comunidade.members.flatMap((m) => (m.avatar ? [m.avatar] : []));
-    for (const a of avatars) expect(a).toMatch(/^\/images\/comunidade\/avatars\/user-\d{2}\.webp$/);
-    expect(avatars).toHaveLength(22);
-    expect(new Set(avatars).size).toBe(22);
+  it("no placeholder links are left", () => {
+    const hrefs = JSON.stringify(site).match(/"href":"[^"]*"/g) ?? [];
+    expect(hrefs.length).toBeGreaterThan(0);
+    expect(hrefs).not.toContain('"href":"#"');
   });
 
-  it("5 distinct articles", () => {
-    const titles = new Set(site.artigos.articles.map((a) => a.title));
-    expect(titles.size).toBe(5);
+  it("6 distinct items", () => {
+    expect(new Set(site.artigos.items.map((a) => a.title)).size).toBe(6);
   });
 });

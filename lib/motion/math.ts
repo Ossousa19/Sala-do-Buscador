@@ -29,6 +29,14 @@ export function tunnelVisual(
   return { opacity: 0, blur: 0 };
 }
 
+/** Distance a card travels past the viewer while fading out, when cards pass one at a time. */
+export const SOLO_GAP = 180;
+
+/** A card behind the one in front stays hidden until that one has left (`spacing` away from it). */
+export function soloOpacity(distance: number, spacing: number): number {
+  return Math.min(1, Math.max(0, (spacing - SOLO_GAP - distance) / 170));
+}
+
 export function indexAtProgress(p: number, starts: readonly number[]): number {
   let idx = 0;
   starts.forEach((s, i) => {

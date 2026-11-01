@@ -2,7 +2,7 @@
 import { motion, useTransform, type MotionValue } from "motion/react";
 import type { Step, TrilhasContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
-import { TwoToneTitle } from "@/components/motion/TwoToneTitle";
+import { SectionLabel, TwoLineTitle } from "@/components/ui/SectionHeading";
 import { StepCard } from "@/components/ui/StepCard";
 import { holdRange } from "@/lib/motion/math";
 
@@ -22,12 +22,11 @@ export const TRILHAS_REVEAL = STEP_RISE[0][1];
 // once the divider line beside it has (almost) finished drawing up to it.
 const MARKER_SLICE = 0.3;
 
-// 19332:5442: 1px line, transparent → #908779 → transparent, at 30%.
-const DIVIDER_BG = "linear-gradient(180deg,rgba(246,231,206,0) 0%,#908779 51.4%,rgba(144,135,121,0) 98.6%)";
+const DIVIDER_BG = "linear-gradient(180deg,rgba(57,0,7,0) 0%,#390007 51.4%,rgba(57,0,7,0) 98.6%)";
 
 export function Trilhas({ content }: { content: TrilhasContent }) {
   return (
-    <SceneTrack id="trilhas" labelledBy="trilhas-title" heights={TRILHAS_TRACK} revealProgress={TRILHAS_REVEAL} className="bg-[#111313]">
+    <SceneTrack id="trilhas" labelledBy="trilhas-title" heights={TRILHAS_TRACK} revealProgress={TRILHAS_REVEAL} className="bg-cream">
       {(progress, reduced) => <TrilhasStage content={content} progress={progress} reduced={reduced} />}
     </SceneTrack>
   );
@@ -35,22 +34,15 @@ export function Trilhas({ content }: { content: TrilhasContent }) {
 
 function TrilhasStage({ content, progress, reduced }: { content: TrilhasContent; progress: MotionValue<number>; reduced: boolean }) {
   const draw = useTransform(progress, ...holdRange([0.08, 0.9], [0, 1])); // mobile line scale
-  // The title settles a little smaller as the steps arrive, like the reference.
+  // The heading settles a little smaller as the steps arrive, like the reference.
   const titleScale = useTransform(progress, ...holdRange([0.06, 0.6], [1, 0.8]));
   return (
-    <div className="relative h-full min-h-svh w-full overflow-hidden bg-[#111313]">
-      <div className="container-page relative flex min-h-svh flex-col justify-center gap-8 py-16 lg:h-svh lg:justify-start lg:gap-10 lg:pb-0 lg:pt-[92px]">
-        <motion.div className="origin-top-left motion-reduce:transform-none!" style={{ scale: reduced ? 1 : titleScale }}>
-          <TwoToneTitle
-            id="trilhas-title"
-            dim={content.titleDim}
-            lit={content.titleLit}
-            progress={progress}
-            range={[0, 0.12]}
-            className="max-w-[545px] text-[clamp(44px,5.7vw,82px)] leading-[0.82] lg:max-w-[6.65em] lg:text-[clamp(44px,min(5.7vw,9svh),82px)]"
-            dimClassName="text-white/60"
-            litClassName="text-cream"
-          />
+    <div className="relative h-full min-h-svh w-full overflow-hidden bg-cream">
+      <div className="container-page relative flex min-h-svh flex-col justify-center gap-8 py-16 lg:h-svh lg:justify-start lg:gap-6 lg:pb-0 lg:pt-[104px]">
+        <motion.div className="flex origin-top-left flex-col gap-4 motion-reduce:transform-none!" style={{ scale: reduced ? 1 : titleScale }}>
+          <SectionLabel>{content.label}</SectionLabel>
+          <TwoLineTitle id="trilhas-title" line1={content.line1} line2={content.line2} />
+          <p className="text-sm font-light text-text-3">{content.note}</p>
         </motion.div>
 
         {/* Desktop: rising columns, each with its own line drawing up behind it */}
@@ -62,8 +54,8 @@ function TrilhasStage({ content, progress, reduced }: { content: TrilhasContent;
 
         {/* Mobile/tablet: vertical list */}
         <div className="relative lg:hidden">
-          <div aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-px bg-cream/10" />
-          <motion.div aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-px origin-top bg-cream/40" style={{ scaleY: reduced ? 1 : draw }} />
+          <div aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-px bg-ink/10" />
+          <motion.div aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-px origin-top bg-ink/40" style={{ scaleY: reduced ? 1 : draw }} />
           <ol className="flex flex-col gap-6 pl-6 md:gap-10">
             {content.steps.map((step, i) => (
               <ListStep key={step.numeral} step={step} index={i} progress={progress} reduced={reduced} />
@@ -85,7 +77,7 @@ function RisingStep({ step, index, progress, reduced }: { step: Step; index: num
   const markerScale = useTransform(progress, ...holdRange([markerFrom, end], [0.6, 1]));
   const markerOpacity = useTransform(progress, ...holdRange([markerFrom, end], [0, 1]));
   return (
-    <li className="relative pl-[25px] pr-4 pt-[54px]" data-focus-progress={end}>
+    <li className="relative pl-[25px] pr-4 pt-10" data-focus-progress={end}>
       <motion.div
         aria-hidden="true"
         className="absolute bottom-0 left-0 top-0 w-px origin-top opacity-30 motion-reduce:scale-y-100!"

@@ -4,6 +4,7 @@ import { motion, useTransform, type MotionValue } from "motion/react";
 import type { PerguntasContent } from "@/content/types";
 import { SceneTrack } from "@/components/motion/SceneTrack";
 import { Pill, Tag } from "@/components/ui/Pill";
+import { SectionLabel, TwoLineTitle } from "@/components/ui/SectionHeading";
 import { holdRange } from "@/lib/motion/math";
 
 export const PERGUNTAS_TRACK = { desktop: 150, mobile: 100 };
@@ -37,18 +38,21 @@ function PerguntasStage({ content, progress, reduced }: { content: PerguntasCont
         className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(90deg,#0c0404_28.3%,rgba(12,4,4,0)_97.5%)] md:w-[92%]"
       />
       <div className="container-page relative py-24">
-        <div className="flex max-w-[863px] flex-col items-start gap-8">
-          <h2 id="perguntas-title" className="font-display text-[clamp(34px,3.75vw,54px)] leading-normal text-white">{content.title}</h2>
-          <p className="max-w-[700px] text-base leading-normal text-white/60">
+        <div className="flex max-w-[863px] flex-col items-start gap-6">
+          <div className="flex flex-col gap-4">
+            <SectionLabel tone="dark">{content.label}</SectionLabel>
+            <TwoLineTitle id="perguntas-title" line1={content.line1} line2={content.line2} tone="dark" />
+          </div>
+          <p className="max-w-[700px] text-lg font-light leading-relaxed text-white/75">
             {content.text}
-            <strong className="block font-bold text-white">{content.textStrong}</strong>
+            <strong className="block font-semibold text-white">{content.textStrong}</strong>
           </p>
           <ul aria-label={content.themesLabel} className="flex max-w-[640px] flex-wrap gap-3">
             {content.themes.map((theme, i) => (
               <ScatterTag key={theme} label={theme} index={i} progress={progress} reduced={reduced} />
             ))}
           </ul>
-          <Pill href={content.cta.href}>{content.cta.label}</Pill>
+          <Pill href={content.cta.href} arrow>{content.cta.label}</Pill>
         </div>
       </div>
     </div>
@@ -63,14 +67,12 @@ function ScatterTag({ label, index, progress, reduced }: { label: string; index:
   const [, yO] = holdRange([from, to], [s.y, 0]);
   const [, rO] = holdRange([from, to], [s.r, 0]);
   const [, oO] = holdRange([from, to], [0.2, 1]);
-  const [, fO] = holdRange([from, to], ["blur(8px)", "blur(0px)"]);
   const x = useTransform(progress, inR, xO);
   const y = useTransform(progress, inR, yO);
   const rotate = useTransform(progress, inR, rO);
   const opacity = useTransform(progress, inR, oO);
-  const filter = useTransform(progress, inR, fO);
   return (
-    <motion.li className="motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:filter-none!" style={reduced ? undefined : { x, y, rotate, opacity, filter }}>
+    <motion.li className="motion-reduce:opacity-100! motion-reduce:transform-none!" style={reduced ? undefined : { x, y, rotate, opacity }}>
       <Tag>{label}</Tag>
     </motion.li>
   );

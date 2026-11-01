@@ -1,26 +1,22 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { site } from "@/content/site";
-import { setMatchMedia } from "@/vitest.setup";
 import { Curadoria } from "./Curadoria";
 
 describe("Curadoria", () => {
-  it("title and first principle", () => {
-    setMatchMedia(() => false);
+  it("title, text and the three principles, all visible at once", () => {
     render(<Curadoria content={site.curadoria} />);
-    expect(screen.getByRole("heading", { level: 2 })).toHaveAccessibleName("Curadoria de museu, não pregação");
-    expect(screen.getByRole("heading", { level: 3, name: "Fonte à vista" })).toBeInTheDocument();
+    expect(document.getElementById("curadoria")).toHaveAttribute("aria-labelledby", "curadoria-title");
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Curador de museu, não pregador.");
+    expect(screen.getByText(site.curadoria.text)).toBeInTheDocument();
+    for (const p of site.curadoria.principles) {
+      expect(screen.getByRole("heading", { level: 3, name: p.title })).toBeInTheDocument();
+      expect(screen.getByText(p.text)).toBeInTheDocument();
+    }
   });
 
-  it("with reduced motion, the arrows switch principles directly", async () => {
-    setMatchMedia((q) => q.includes("reduce"));
+  it("identifies the picture as an illustration of the collection", () => {
     render(<Curadoria content={site.curadoria} />);
-    await userEvent.click(screen.getByRole("button", { name: "Próximo princípio" }));
-    expect(await screen.findByRole("heading", { level: 3, name: "Neutralidade doutrinária" })).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Princípio anterior" }));
-    await userEvent.click(screen.getByRole("button", { name: "Princípio anterior" }));
-    expect(await screen.findByRole("heading", { level: 3, name: "Comparar sem hierarquizar" })).toBeInTheDocument();
-    setMatchMedia(() => false);
+    expect(screen.getByText(site.curadoria.imageCaption)).toBeInTheDocument();
   });
 });

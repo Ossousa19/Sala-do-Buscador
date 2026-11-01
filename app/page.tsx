@@ -7,7 +7,9 @@ import { Curadoria } from "@/components/scenes/Curadoria";
 import { Perguntas } from "@/components/scenes/Perguntas";
 import { Trilhas } from "@/components/scenes/Trilhas";
 import { Artigos } from "@/components/scenes/Artigos";
-import { Comunidade } from "@/components/scenes/Comunidade";
+import { Leitura } from "@/components/scenes/Leitura";
+import { Conquistas } from "@/components/scenes/Conquistas";
+import { Anfitriao } from "@/components/scenes/Anfitriao";
 import { Faq } from "@/components/scenes/Faq";
 import { Chamado } from "@/components/scenes/Chamado";
 import { FooterCurtain } from "@/components/scenes/FooterCurtain";
@@ -25,7 +27,9 @@ export default function Home() {
         <Perguntas content={site.perguntas} />
         <Trilhas content={site.trilhas} />
         <Artigos content={site.artigos} />
-        <Comunidade content={site.comunidade} />
+        <Leitura content={site.leitura} />
+        <Conquistas content={site.conquistas} />
+        <Anfitriao content={site.anfitriao} />
         <Faq content={site.faq} />
         <Chamado content={site.chamado} />
       </main>

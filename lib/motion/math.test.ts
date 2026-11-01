@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  archZoom, clamp, indexAtProgress, holdRange, progressForItem, tunnelLayout, tunnelVisual, wrap,
+  archZoom, clamp, indexAtProgress, holdRange, progressForItem, tunnelLayout, tunnelVisual, wrap, SOLO_GAP, soloOpacity,
 } from "./math";
 
 describe("clamp", () => {
@@ -75,5 +75,13 @@ describe("holdRange", () => {
   });
   it("throws on length mismatch", () => {
     expect(() => holdRange([0, 1], [1])).toThrow("holdRange: input and output lengths differ");
+  });
+});
+
+describe("soloOpacity", () => {
+  it("keeps the next card hidden until the one in front has left, then fades it in", () => {
+    expect(soloOpacity(1000, 1000)).toBe(0);
+    expect(soloOpacity(1000 - SOLO_GAP, 1000)).toBe(0);
+    expect(soloOpacity(0, 1000)).toBe(1);
   });
 });

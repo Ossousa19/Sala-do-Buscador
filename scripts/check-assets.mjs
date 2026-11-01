@@ -5,18 +5,11 @@ const files = [
   "public/images/hero/arch.webp",
   "public/images/og.jpg",
   "public/images/salas/space.webp",
-  "public/images/salas/proposito.webp",
-  "public/images/salas/fe-poder.webp",
-  "public/images/textures/parchment.webp",
-  "public/images/textures/stone-row.webp",
-  "public/images/ornaments/side-left.svg",
-  "public/images/icons/arrow-prev.svg",
-  "public/images/icons/arrow-next.svg",
+  ...["espiral", "enoque", "nag-hammadi", "urantia"].map((n) => `public/images/salas/${n}.webp`),
+  ...["claustro", "arco-do-ceu", "avatar", "hero"].map((n) => `public/images/anfitrioes/${n}.webp`),
   "public/images/perguntas/scene.webp",
-  "public/assets/hero/cosmos.webm",
-  "public/assets/hero/cosmos.mp4",
-  ...["tome-caravaggio", "hermes-siena", "nag-hammadi-codex-ii", "tabua-esmeralda-khunrath", "karnak-roberts"].map((n) => `public/images/artigos/${n}.webp`),
-  ...Array.from({ length: 22 }, (_, i) => `public/images/comunidade/avatars/user-${String(i + 1).padStart(2, "0")}.webp`),
+  ...["1920", "1080"].flatMap((s) => [`public/assets/hero/cosmos-${s}.webm`, `public/assets/hero/cosmos-${s}.mp4`]),
+  ...["capa-evangelho-tome", "capa-esferas", "capa-tabua", "capa-nag-hammadi"].map((n) => `public/images/artigos/${n}.webp`),
 ];
 const missing = files.filter((f) => !existsSync(f) || statSync(f).size === 0);
 if (missing.length) {

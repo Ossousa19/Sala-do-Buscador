@@ -89,7 +89,8 @@ function HeroStage({ content, progress, reduced }: { content: HeroContent; progr
             <br />
             {content.title[1]}
           </h1>
-          <p className="max-w-[780px] text-balance text-[clamp(18px,1.67vw,24px)] font-light leading-[1.1] text-bone/60">{content.description}</p>
+          {/* text-balance evens the lines out so none ends on a lone word */}
+          <p className="max-w-[780px] text-balance text-[clamp(16px,1.39vw,20px)] font-light leading-[1.3] text-bone/60">{content.description}</p>
         </motion.div>
         <motion.div inert={!reduced && ctaHidden} style={{ opacity: on(ctaOpacity) }} className="mt-8">
           <Pill href={content.cta.href} variant="glass">{content.cta.label}</Pill>
